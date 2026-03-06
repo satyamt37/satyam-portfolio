@@ -475,6 +475,14 @@ footer p{font-size:.72rem;color:var(--t3)}
     transition:transform .11s ease;
     transform-origin:center;
   }
+  #shooting-cursor .cursor-tail{
+    position:absolute;left:-2px;top:1px;width:44px;height:3px;border-radius:8px;
+    background:linear-gradient(90deg,rgba(27,150,255,0) 0%,rgba(27,150,255,.18) 30%,rgba(126,203,255,.65) 75%,rgba(232,245,255,.95) 100%);
+    transform:translate(-100%,-50%) rotate(var(--tail-tilt,-16deg)) scaleX(var(--tail-scale,1));
+    transform-origin:right center;
+    transition:transform .1s ease,opacity .12s ease;
+    opacity:.75;
+  }
   #shooting-cursor .cursor-cloud path{
     fill:url(#sfCloudGrad);
     stroke:rgba(217,241,255,.95);
@@ -486,6 +494,17 @@ footer p{font-size:.72rem;color:var(--t3)}
   }
   #shooting-cursor.active .cursor-cloud{
     transform:translate(-50%,-50%) scale(.9) rotate(var(--tilt,0deg));
+  }
+  #shooting-cursor.hovering .cursor-halo{
+    transform:translate(-50%,-50%) scale(1.2);
+    border-color:rgba(126,203,255,.85);
+    opacity:1;
+  }
+  #shooting-cursor.hovering .cursor-tail{
+    opacity:1;
+  }
+  #shooting-cursor.hovering .cursor-cloud{
+    filter:brightness(1.12);
   }
   @keyframes cloudHalo{
     0%,100%{opacity:.82}
@@ -605,6 +624,7 @@ footer p{font-size:.72rem;color:var(--t3)}
 <body>
 <div id="shooting-cursor" aria-hidden="true">
   <span class="cursor-halo"></span>
+  <span class="cursor-tail"></span>
   <svg class="cursor-cloud" viewBox="0 0 64 48" role="presentation" aria-hidden="true">
     <defs>
       <linearGradient id="sfCloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -1803,6 +1823,13 @@ if(window.matchMedia('(pointer:fine)').matches){
   window.addEventListener('pointermove',e=>{
     mx=e.clientX;my=e.clientY;
   });
+  const hoverSelector='a,button,.btn,.proj-card,.sk-card,.cloud-card,.depth-card,.cert-card,.award-card,.rec-card,.cl,.tool-pill';
+  document.addEventListener('mouseover',e=>{
+    cursor.classList.toggle('hovering',!!e.target.closest(hoverSelector));
+  });
+  document.addEventListener('mouseout',e=>{
+    if(!e.relatedTarget||!e.relatedTarget.closest||!e.relatedTarget.closest(hoverSelector))cursor.classList.remove('hovering');
+  });
   window.addEventListener('pointerdown',()=>cursor.classList.add('active'));
   window.addEventListener('pointerup',()=>cursor.classList.remove('active'));
   window.addEventListener('pointercancel',()=>cursor.classList.remove('active'));
@@ -1813,7 +1840,12 @@ if(window.matchMedia('(pointer:fine)').matches){
     const dx=cx-px,dy=cy-py;
     px=cx;py=cy;
     const tilt=Math.max(-16,Math.min(16,dx*1.2+dy*.45));
+    const speed=Math.min(1.2,Math.hypot(dx,dy)/7);
+    const tailScale=(1+speed*.75).toFixed(2);
+    const tailTilt=(tilt-14).toFixed(2);
     cursor.style.setProperty('--tilt',`${tilt}deg`);
+    cursor.style.setProperty('--tail-scale',tailScale);
+    cursor.style.setProperty('--tail-tilt',`${tailTilt}deg`);
     cursor.style.transform=`translate3d(${cx}px,${cy}px,0)`;
     requestAnimationFrame(tick);
   }
