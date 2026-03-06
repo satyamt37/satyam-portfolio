@@ -459,25 +459,26 @@ footer p{font-size:.72rem;color:var(--t3)}
   *{cursor:none!important}
   #shooting-cursor{
     position:fixed;top:0;left:0;z-index:1200;pointer-events:none;
-    transform:translate3d(-999px,-999px,0);mix-blend-mode:screen;
-    filter:drop-shadow(0 0 20px rgba(27,150,255,.5));
+    transform:translate3d(-999px,-999px,0);
+    filter:drop-shadow(0 0 10px rgba(27,150,255,.35));
   }
   #shooting-cursor .cursor-core{
-    position:absolute;left:0;top:0;width:10px;height:10px;border-radius:50%;
-    background:radial-gradient(circle,#fff 0%,#9fd3ff 46%,rgba(1,118,211,.05) 100%);
+    position:absolute;left:0;top:0;width:8px;height:8px;border-radius:50%;
+    background:radial-gradient(circle,#e8f5ff 0%,#7ecbff 60%,#1b96ff 100%);
     transform:translate(-50%,-50%);
   }
-  #shooting-cursor .cursor-tail{
-    position:absolute;left:-1px;top:0;width:68px;height:2px;border-radius:4px;
-    background:linear-gradient(90deg,rgba(1,118,211,0),rgba(1,118,211,.22) 30%,rgba(159,211,255,.9) 70%,#fff 100%);
-    transform:translate(-100%,-50%) rotate(-25deg);transform-origin:right center;
+  #shooting-cursor .cursor-ring{
+    position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;
+    border:1px solid rgba(126,203,255,.7);
+    background:radial-gradient(circle,rgba(27,150,255,.12),rgba(27,150,255,0) 68%);
+    transform:translate(-50%,-50%);
+    transition:transform .14s ease,opacity .14s ease;
+    opacity:.9;
   }
-  .trail-star{
-    position:fixed;z-index:1199;pointer-events:none;width:8px;height:8px;
-    border-radius:50%;background:radial-gradient(circle,#fff 0%,#74beff 70%,rgba(116,190,255,0) 100%);
-    animation:trailFade .6s ease-out forwards;
+  #shooting-cursor.active .cursor-ring{
+    transform:translate(-50%,-50%) scale(.82);
+    opacity:.75;
   }
-  @keyframes trailFade{to{opacity:0;transform:translateY(-8px) scale(.1)}}
 }
 
 /* CLOUD EXPERTISE */
@@ -590,7 +591,7 @@ footer p{font-size:.72rem;color:var(--t3)}
 </style>
 </head>
 <body>
-<div id="shooting-cursor" aria-hidden="true"><span class="cursor-core"></span><span class="cursor-tail"></span></div>
+<div id="shooting-cursor" aria-hidden="true"><span class="cursor-ring"></span><span class="cursor-core"></span></div>
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-logo">SFDC.ST</div>
@@ -1769,28 +1770,21 @@ if(window.matchMedia('(pointer:fine)').matches){
   });
 }
 
-/* Shooting-star cursor */
+/* Professional custom cursor */
 (function(){
   if(!window.matchMedia('(pointer:fine)').matches||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const cursor=document.getElementById('shooting-cursor');
   if(!cursor)return;
-  let mx=-999,my=-999,cx=-999,cy=-999,lastTrail=0;
-  function spawnTrail(x,y){
-    const star=document.createElement('span');
-    star.className='trail-star';
-    star.style.left=`${x-4}px`;
-    star.style.top=`${y-4}px`;
-    document.body.appendChild(star);
-    setTimeout(()=>star.remove(),620);
-  }
+  let mx=-999,my=-999,cx=-999,cy=-999;
   window.addEventListener('pointermove',e=>{
     mx=e.clientX;my=e.clientY;
-    const now=performance.now();
-    if(now-lastTrail>26){spawnTrail(mx,my);lastTrail=now;}
   });
+  window.addEventListener('pointerdown',()=>cursor.classList.add('active'));
+  window.addEventListener('pointerup',()=>cursor.classList.remove('active'));
+  window.addEventListener('pointercancel',()=>cursor.classList.remove('active'));
   function tick(){
-    cx+=(mx-cx)*.32;
-    cy+=(my-cy)*.32;
+    cx+=(mx-cx)*.24;
+    cy+=(my-cy)*.24;
     cursor.style.transform=`translate3d(${cx}px,${cy}px,0)`;
     requestAnimationFrame(tick);
   }
