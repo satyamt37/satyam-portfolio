@@ -462,22 +462,34 @@ footer p{font-size:.72rem;color:var(--t3)}
     transform:translate3d(-999px,-999px,0);
     filter:drop-shadow(0 0 10px rgba(27,150,255,.35));
   }
-  #shooting-cursor .cursor-core{
-    position:absolute;left:0;top:0;width:8px;height:8px;border-radius:50%;
-    background:radial-gradient(circle,#e8f5ff 0%,#7ecbff 60%,#1b96ff 100%);
+  #shooting-cursor .cursor-halo{
+    position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;
+    border:1px solid rgba(126,203,255,.52);
+    background:radial-gradient(circle,rgba(27,150,255,.16),rgba(27,150,255,0) 70%);
     transform:translate(-50%,-50%);
+    animation:cloudHalo 2s ease-in-out infinite;
   }
-  #shooting-cursor .cursor-ring{
-    position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;
-    border:1px solid rgba(126,203,255,.7);
-    background:radial-gradient(circle,rgba(27,150,255,.12),rgba(27,150,255,0) 68%);
-    transform:translate(-50%,-50%);
-    transition:transform .14s ease,opacity .14s ease;
-    opacity:.9;
+  #shooting-cursor .cursor-cloud{
+    position:absolute;left:0;top:0;width:24px;height:18px;
+    transform:translate(-50%,-50%) rotate(var(--tilt,0deg));
+    transition:transform .11s ease;
+    transform-origin:center;
   }
-  #shooting-cursor.active .cursor-ring{
-    transform:translate(-50%,-50%) scale(.82);
-    opacity:.75;
+  #shooting-cursor .cursor-cloud path{
+    fill:url(#sfCloudGrad);
+    stroke:rgba(217,241,255,.95);
+    stroke-width:.8;
+  }
+  #shooting-cursor.active .cursor-halo{
+    transform:translate(-50%,-50%) scale(.86);
+    opacity:.7;
+  }
+  #shooting-cursor.active .cursor-cloud{
+    transform:translate(-50%,-50%) scale(.9) rotate(var(--tilt,0deg));
+  }
+  @keyframes cloudHalo{
+    0%,100%{opacity:.82}
+    50%{opacity:.5}
   }
 }
 
@@ -591,7 +603,19 @@ footer p{font-size:.72rem;color:var(--t3)}
 </style>
 </head>
 <body>
-<div id="shooting-cursor" aria-hidden="true"><span class="cursor-ring"></span><span class="cursor-core"></span></div>
+<div id="shooting-cursor" aria-hidden="true">
+  <span class="cursor-halo"></span>
+  <svg class="cursor-cloud" viewBox="0 0 64 48" role="presentation" aria-hidden="true">
+    <defs>
+      <linearGradient id="sfCloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#7ECbFF"></stop>
+        <stop offset="55%" stop-color="#1B96FF"></stop>
+        <stop offset="100%" stop-color="#0176D3"></stop>
+      </linearGradient>
+    </defs>
+    <path d="M19 38h27c7.2 0 13-5.4 13-12 0-6.3-5-11.5-11.6-12C45.3 8.7 39.9 5 33.7 5c-7.4 0-13.6 5.3-14.8 12.4C10.4 18.2 4 24.4 4 31.8 4 39.6 10.7 46 19 46h27"></path>
+  </svg>
+</div>
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-logo">SFDC.ST</div>
@@ -1775,16 +1799,21 @@ if(window.matchMedia('(pointer:fine)').matches){
   if(!window.matchMedia('(pointer:fine)').matches||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const cursor=document.getElementById('shooting-cursor');
   if(!cursor)return;
-  let mx=-999,my=-999,cx=-999,cy=-999;
+  let mx=-999,my=-999,cx=-999,cy=-999,px=-999,py=-999;
   window.addEventListener('pointermove',e=>{
     mx=e.clientX;my=e.clientY;
   });
   window.addEventListener('pointerdown',()=>cursor.classList.add('active'));
   window.addEventListener('pointerup',()=>cursor.classList.remove('active'));
   window.addEventListener('pointercancel',()=>cursor.classList.remove('active'));
+  window.addEventListener('pointerleave',()=>cursor.classList.remove('active'));
   function tick(){
     cx+=(mx-cx)*.24;
     cy+=(my-cy)*.24;
+    const dx=cx-px,dy=cy-py;
+    px=cx;py=cy;
+    const tilt=Math.max(-16,Math.min(16,dx*1.2+dy*.45));
+    cursor.style.setProperty('--tilt',`${tilt}deg`);
     cursor.style.transform=`translate3d(${cx}px,${cy}px,0)`;
     requestAnimationFrame(tick);
   }
