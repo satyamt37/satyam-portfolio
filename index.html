@@ -22,6 +22,14 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.65;overflow-x:hidden}
+body::before{
+  content:'';position:fixed;inset:-30%;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(1,118,211,.14),transparent 36%),
+    radial-gradient(circle at 80% 10%,rgba(6,182,212,.12),transparent 34%),
+    radial-gradient(circle at 50% 80%,rgba(123,97,255,.1),transparent 38%);
+  animation:bgFlow 18s linear infinite;
+}
 ::selection{background:rgba(1,118,211,.25)}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:var(--bg)}
@@ -77,7 +85,13 @@ canvas#pts{position:absolute;inset:0;z-index:0}
 .hero-name{font-size:clamp(3.2rem,8vw,6.2rem);font-weight:900;line-height:1.0;
   letter-spacing:-3px;margin-bottom:12px;animation:up .7s .07s ease both}
 .hero-name .g{background:linear-gradient(135deg,var(--sf) 0%,var(--sf2) 50%,var(--teal) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:220% 220%;animation:spectrum 7s linear infinite}
+@keyframes spectrum{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
 
 .hero-role{font-size:clamp(.95rem,2vw,1.25rem);color:var(--t2);font-weight:400;
   margin-bottom:10px;animation:up .7s .13s ease both}
@@ -178,6 +192,11 @@ section{padding:96px 5%}
 @keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes fromright{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes bgFlow{
+  0%{transform:translate3d(0,0,0) rotate(0deg)}
+  50%{transform:translate3d(2%,-1.5%,0) rotate(4deg)}
+  100%{transform:translate3d(0,0,0) rotate(0deg)}
+}
 
 /* ABOUT */
 #about{background:var(--bg2)}
@@ -436,6 +455,30 @@ footer p{font-size:.72rem;color:var(--t3)}
 
 /* CURSOR */
 #cg{display:none}
+@media (pointer:fine){
+  *{cursor:none!important}
+  #shooting-cursor{
+    position:fixed;top:0;left:0;z-index:1200;pointer-events:none;
+    transform:translate3d(-999px,-999px,0);mix-blend-mode:screen;
+    filter:drop-shadow(0 0 20px rgba(27,150,255,.5));
+  }
+  #shooting-cursor .cursor-core{
+    position:absolute;left:0;top:0;width:10px;height:10px;border-radius:50%;
+    background:radial-gradient(circle,#fff 0%,#9fd3ff 46%,rgba(1,118,211,.05) 100%);
+    transform:translate(-50%,-50%);
+  }
+  #shooting-cursor .cursor-tail{
+    position:absolute;left:-1px;top:0;width:68px;height:2px;border-radius:4px;
+    background:linear-gradient(90deg,rgba(1,118,211,0),rgba(1,118,211,.22) 30%,rgba(159,211,255,.9) 70%,#fff 100%);
+    transform:translate(-100%,-50%) rotate(-25deg);transform-origin:right center;
+  }
+  .trail-star{
+    position:fixed;z-index:1199;pointer-events:none;width:8px;height:8px;
+    border-radius:50%;background:radial-gradient(circle,#fff 0%,#74beff 70%,rgba(116,190,255,0) 100%);
+    animation:trailFade .6s ease-out forwards;
+  }
+  @keyframes trailFade{to{opacity:0;transform:translateY(-8px) scale(.1)}}
+}
 
 /* CLOUD EXPERTISE */
 .clouds-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
@@ -478,6 +521,55 @@ footer p{font-size:.72rem;color:var(--t3)}
 .depth-list li::before{content:'';position:absolute;left:0;top:7px;width:4px;height:4px;
   background:var(--sf2);border-radius:50%}
 
+/* APEX LAB */
+#apex-lab{
+  background:
+    radial-gradient(circle at 0% 20%,rgba(1,118,211,.18),transparent 42%),
+    radial-gradient(circle at 100% 70%,rgba(6,182,212,.18),transparent 45%),
+    var(--bg2);
+  position:relative;overflow:hidden
+}
+#apex-lab::before{
+  content:'';position:absolute;inset:-30% -10%;pointer-events:none;
+  background:repeating-linear-gradient(120deg,rgba(255,255,255,.012) 0 2px,transparent 2px 22px);
+  transform:translateX(-8%);animation:drift 14s linear infinite;
+}
+@keyframes drift{to{transform:translateX(8%)}}
+.apex-grid{position:relative;display:grid;grid-template-columns:1fr 1.2fr;gap:22px}
+.apex-card{
+  background:rgba(4,8,26,.72);border:1px solid var(--border);border-radius:var(--r);
+  backdrop-filter:blur(14px);padding:26px;position:relative;overflow:hidden
+}
+.apex-card::after{
+  content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(27,150,255,.08),transparent);
+  transform:translateX(-120%);animation:sweep 8s ease-in-out infinite;
+}
+@keyframes sweep{40%,100%{transform:translateX(120%)}}
+.apex-label{font-size:.68rem;font-weight:800;letter-spacing:.16em;color:var(--teal);text-transform:uppercase}
+.apex-title{font-size:1.45rem;font-weight:800;margin:6px 0 10px;line-height:1.25}
+.apex-copy{font-size:.86rem;color:var(--t2);line-height:1.85;margin-bottom:16px}
+.apex-points{list-style:none;display:flex;flex-direction:column;gap:8px}
+.apex-points li{font-size:.8rem;color:var(--t2);padding-left:13px;position:relative}
+.apex-points li::before{content:'';position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%;background:var(--sf2)}
+.apex-code{padding:0;overflow:hidden}
+.code-head{
+  display:flex;justify-content:space-between;align-items:center;padding:12px 16px;
+  border-bottom:1px solid var(--border);background:rgba(1,118,211,.08);font-family:var(--mono);font-size:.72rem;color:var(--t2)
+}
+.copy-btn{
+  border:1px solid rgba(27,150,255,.35);background:rgba(1,118,211,.15);color:var(--sf2);
+  border-radius:7px;font-size:.66rem;font-weight:700;padding:4px 10px;cursor:pointer;transition:all .25s
+}
+.copy-btn:hover{background:rgba(27,150,255,.25);transform:translateY(-1px)}
+.apex-code pre{
+  margin:0;padding:18px 20px 22px;overflow:auto;max-height:360px;
+  font-family:var(--mono);font-size:.75rem;line-height:1.62;color:#d6e9ff;background:transparent
+}
+.apex-code .line{display:block;padding:0 10px;border-left:2px solid transparent}
+.apex-code .line.hit{background:rgba(0,230,118,.08);border-left-color:#00E676}
+.token-k{color:#7ecbff}.token-c{color:#6b87b9}.token-t{color:#8bf9b4}.token-a{color:#f4c47a}
+.token-m{color:#f7a8d6}.token-s{color:#9bcfff}
+
 /* RESPONSIVE */
 @media(max-width:1000px){.hero-stats{display:none}.about-grid{grid-template-columns:1fr}}
 @media(max-width:680px){
@@ -489,6 +581,7 @@ footer p{font-size:.72rem;color:var(--t3)}
   .btn{justify-content:center}
   .proj-card.featured-card{grid-template-columns:1fr}
   .proj-grid{grid-template-columns:1fr}
+  .apex-grid{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important;transition:none !important}
@@ -497,6 +590,7 @@ footer p{font-size:.72rem;color:var(--t3)}
 </style>
 </head>
 <body>
+<div id="shooting-cursor" aria-hidden="true"><span class="cursor-core"></span><span class="cursor-tail"></span></div>
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-logo">SFDC.ST</div>
@@ -506,6 +600,7 @@ footer p{font-size:.72rem;color:var(--t3)}
     <li><a href="#experience">Experience</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#clouds">Clouds</a></li>
+    <li><a href="#apex-lab">Apex Lab</a></li>
     <li><a href="#certifications">Certs</a></li>
     <li><a href="#recommendations">Reviews</a></li>
     <li><a href="#contact" class="nav-cta">Hire Me</a></li>
@@ -927,6 +1022,59 @@ footer p{font-size:.72rem;color:var(--t3)}
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- APEX LAB -->
+<section id="apex-lab">
+  <div class="sec-lbl reveal">Code Showcase</div>
+  <h2 class="sec-title reveal">Apex <span class="g">Engineering Lab</span></h2>
+  <p class="sec-sub reveal">Production-style service, trigger handler, and resilient callout orchestration pattern used for enterprise B2B flows.</p>
+  <div class="apex-grid">
+    <div class="apex-card reveal">
+      <div class="apex-label">Live Pattern</div>
+      <h3 class="apex-title">Queueable + Service Layer + Guarded Trigger</h3>
+      <p class="apex-copy">This pattern keeps trigger logic slim, routes heavy work to async processing, and centralizes business rules in a testable service class.</p>
+      <ul class="apex-points">
+        <li>Bulk-safe from the first line of trigger execution.</li>
+        <li>Idempotent queue handling with payload snapshots.</li>
+        <li>Explicit retry hooks for external integration failures.</li>
+        <li>Clean separation across selector, service, and integration layers.</li>
+      </ul>
+    </div>
+    <div class="apex-card apex-code reveal d1">
+      <div class="code-head">
+        <span>OrderSyncService.cls</span>
+        <button class="copy-btn" type="button" id="copyApexBtn">Copy Apex</button>
+      </div>
+      <pre><code id="apexSnippet"><span class="line"><span class="token-k">public with sharing class</span> <span class="token-t">OrderSyncService</span> {</span>
+<span class="line">  <span class="token-c">// Entrypoint used by trigger handlers</span></span>
+<span class="line">  <span class="token-k">public static void</span> enqueueSync(<span class="token-k">Set&lt;Id&gt;</span> orderIds){</span>
+<span class="line">    <span class="token-k">if</span>(orderIds == <span class="token-k">null</span> || orderIds.isEmpty()) <span class="token-k">return</span>;</span>
+<span class="line">    System.enqueueJob(<span class="token-k">new</span> <span class="token-t">OrderSyncQueueable</span>(<span class="token-k">new</span> <span class="token-t">List&lt;Id&gt;</span>(orderIds)));</span>
+<span class="line">  }</span>
+<span class="line"></span>
+<span class="line">  <span class="token-k">public class</span> <span class="token-t">OrderSyncQueueable</span> <span class="token-k">implements</span> Queueable, Database.AllowsCallouts {</span>
+<span class="line">    <span class="token-k">private final</span> <span class="token-t">List&lt;Id&gt;</span> queuedOrderIds;</span>
+<span class="line">    <span class="token-k">public</span> OrderSyncQueueable(<span class="token-t">List&lt;Id&gt;</span> orderIds){</span>
+<span class="line">      queuedOrderIds = orderIds;</span>
+<span class="line">    }</span>
+<span class="line"></span>
+<span class="line">    <span class="token-k">public void</span> execute(QueueableContext context){</span>
+<span class="line">      <span class="token-t">List&lt;Order&gt;</span> ordersToSync = [</span>
+<span class="line">        <span class="token-k">SELECT</span> Id, OrderNumber, Status, EffectiveDate, TotalAmount</span>
+<span class="line">        <span class="token-k">FROM</span> Order <span class="token-k">WHERE</span> Id <span class="token-k">IN</span> :queuedOrderIds</span>
+<span class="line">      ];</span>
+<span class="line">      <span class="token-t">OrderPayloadBuilder</span>.Payload payload = <span class="token-t">OrderPayloadBuilder</span>.fromOrders(ordersToSync);</span>
+<span class="line">      <span class="token-k">try</span> {</span>
+<span class="line">        <span class="token-t">ExternalOrderClient</span>.upsertOrders(payload);</span>
+<span class="line">      } <span class="token-k">catch</span>(Exception ex){</span>
+<span class="line">        <span class="token-t">SyncRetryService</span>.registerFailure(queuedOrderIds, ex.getMessage());</span>
+<span class="line">      }</span>
+<span class="line">    }</span>
+<span class="line">  }</span>
+<span class="line">}</span></code></pre>
+    </div>
   </div>
 </section>
 
@@ -1581,6 +1729,73 @@ window.addEventListener('scroll',()=>{
   document.querySelectorAll('section[id]').forEach(s=>{if(scrollY>=s.offsetTop-120)cur=s.id});
   document.querySelectorAll('.nav-links a').forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--sf)':''});
 });
+
+/* Apex snippet interactions */
+const apexBtn=document.getElementById('copyApexBtn');
+const apexSnippet=document.getElementById('apexSnippet');
+if(apexBtn&&apexSnippet){
+  apexBtn.addEventListener('click',async()=>{
+    const rawText=[...apexSnippet.querySelectorAll('.line')].map(l=>l.innerText).join('\n');
+    try{
+      await navigator.clipboard.writeText(rawText);
+      apexBtn.textContent='Copied';
+      setTimeout(()=>apexBtn.textContent='Copy Apex',1000);
+    }catch(e){
+      apexBtn.textContent='Copy Failed';
+      setTimeout(()=>apexBtn.textContent='Copy Apex',1200);
+    }
+  });
+  const lines=[...apexSnippet.querySelectorAll('.line')];
+  let idx=0;
+  setInterval(()=>{
+    if(!lines.length)return;
+    lines.forEach(l=>l.classList.remove('hit'));
+    lines[idx%lines.length].classList.add('hit');
+    lines[(idx+1)%lines.length].classList.add('hit');
+    idx=(idx+4)%lines.length;
+  },1200);
+}
+
+/* Subtle 3D hover for key cards */
+if(window.matchMedia('(pointer:fine)').matches){
+  document.querySelectorAll('.proj-card,.depth-card,.cloud-card,.apex-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const rx=((e.clientY-r.top)/r.height-.5)*-5;
+      const ry=((e.clientX-r.left)/r.width-.5)*5;
+      card.style.transform=`perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-3px)`;
+    });
+    card.addEventListener('mouseleave',()=>card.style.transform='');
+  });
+}
+
+/* Shooting-star cursor */
+(function(){
+  if(!window.matchMedia('(pointer:fine)').matches||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const cursor=document.getElementById('shooting-cursor');
+  if(!cursor)return;
+  let mx=-999,my=-999,cx=-999,cy=-999,lastTrail=0;
+  function spawnTrail(x,y){
+    const star=document.createElement('span');
+    star.className='trail-star';
+    star.style.left=`${x-4}px`;
+    star.style.top=`${y-4}px`;
+    document.body.appendChild(star);
+    setTimeout(()=>star.remove(),620);
+  }
+  window.addEventListener('pointermove',e=>{
+    mx=e.clientX;my=e.clientY;
+    const now=performance.now();
+    if(now-lastTrail>26){spawnTrail(mx,my);lastTrail=now;}
+  });
+  function tick(){
+    cx+=(mx-cx)*.32;
+    cy+=(my-cy)*.32;
+    cursor.style.transform=`translate3d(${cx}px,${cy}px,0)`;
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
 </script>
 </body>
 </html>
