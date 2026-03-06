@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \":*)",
+      "Bash(pip install pdfplumber -q)",
+      "WebFetch(domain:www.linkedin.com)",
+      "WebFetch(domain:www.credly.com)",
+      "WebFetch(domain:trailhead.salesforce.com)"
+    ]
+  }
+}

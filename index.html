@@ -1,0 +1,1589 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Satyam Tiwari — Senior Salesforce Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#04040e;--bg2:#07071a;--bg3:#0b0b22;
+  --card:rgba(255,255,255,0.028);
+  --border:rgba(255,255,255,0.07);
+  --glow:rgba(1,118,211,0.3);
+  --sf:#0176D3;--sf2:#1B96FF;--sf3:#032D60;
+  --teal:#06B6D4;--violet:#7B61FF;--green:#2E844A;
+  --emerald:#00E676;--gold:#F0A500;--red:#E74C3C;
+  --t1:#EEF4FF;--t2:#8892b0;--t3:#3d4a6b;
+  --font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+  --r:16px;--r2:10px;--ease:cubic-bezier(.23,1,.32,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--font);line-height:1.65;overflow-x:hidden}
+::selection{background:rgba(1,118,211,.25)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--sf);border-radius:3px}
+a{color:inherit;text-decoration:none}
+
+/* NOISE */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:997;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  opacity:.14}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(4,4,14,.7);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);transition:border-color .4s}
+nav.scrolled{border-bottom-color:rgba(1,118,211,.25)}
+.nav-logo{font-family:var(--mono);font-weight:700;font-size:.95rem;
+  background:linear-gradient(135deg,var(--sf),var(--sf2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{font-size:.75rem;font-weight:500;color:var(--t2);
+  letter-spacing:.1em;text-transform:uppercase;transition:color .25s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;
+  background:var(--sf);transition:width .3s}
+.nav-links a:hover{color:var(--sf)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:6px 16px !important;border:1px solid var(--sf) !important;
+  border-radius:6px;color:var(--sf) !important;transition:background .25s,color .25s !important}
+.nav-cta:hover{background:var(--sf);color:#fff !important}
+.nav-cta::after{display:none !important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{width:22px;height:2px;background:var(--t2);border-radius:2px}
+
+/* HERO */
+#hero{min-height:100vh;position:relative;display:flex;align-items:center;
+  padding:130px 5% 80px;overflow:hidden}
+canvas#pts{position:absolute;inset:0;z-index:0}
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(140px)}
+.orb1{width:800px;height:800px;background:rgba(1,118,211,.06);top:-200px;right:-200px}
+.orb2{width:500px;height:500px;background:rgba(3,45,96,.12);bottom:-100px;left:0}
+.orb3{width:300px;height:300px;background:rgba(6,182,212,.04);top:35%;left:45%}
+.hero-inner{position:relative;z-index:1;max-width:820px}
+
+.live-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;
+  border-radius:30px;border:1px solid rgba(0,230,118,.3);
+  background:rgba(0,230,118,.06);font-size:.7rem;font-weight:700;
+  color:#00E676;letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px;
+  animation:up .7s ease both}
+.live-dot{width:6px;height:6px;background:#00E676;border-radius:50%;animation:blink 1.8s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+.hero-name{font-size:clamp(3.2rem,8vw,6.2rem);font-weight:900;line-height:1.0;
+  letter-spacing:-3px;margin-bottom:12px;animation:up .7s .07s ease both}
+.hero-name .g{background:linear-gradient(135deg,var(--sf) 0%,var(--sf2) 50%,var(--teal) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.hero-role{font-size:clamp(.95rem,2vw,1.25rem);color:var(--t2);font-weight:400;
+  margin-bottom:10px;animation:up .7s .13s ease both}
+.hero-role b{color:var(--t1);font-weight:600}
+
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px;animation:up .7s .18s ease both}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:20px;
+  border:1px solid var(--border);background:var(--card);
+  font-size:.74rem;font-weight:600;color:var(--t2)}
+.pill .pd{width:5px;height:5px;background:#00E676;border-radius:50%}
+
+.hero-desc{font-size:1rem;color:var(--t2);line-height:1.85;max-width:620px;
+  margin-bottom:38px;animation:up .7s .22s ease both}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;animation:up .7s .28s ease both}
+
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;
+  font-weight:700;font-size:.86rem;border-radius:var(--r2);cursor:pointer;transition:.25s}
+.btn-p{background:linear-gradient(135deg,var(--sf),var(--sf2));color:#fff;border:none;
+  box-shadow:0 0 28px rgba(1,118,211,.3);position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--sf2),var(--sf));opacity:0;transition:.3s}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(1,118,211,.5)}
+.btn-p:hover::before{opacity:1}
+.btn-p span{position:relative;z-index:1}
+.btn-g{border:1px solid var(--border);color:var(--t2)}
+.btn-g:hover{border-color:var(--sf);color:var(--sf);transform:translateY(-2px)}
+
+.hero-stats{position:absolute;right:5%;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:14px;z-index:1;
+  animation:fromright .9s .5s ease both}
+.stat-card{background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px 20px;text-align:center;
+  backdrop-filter:blur(12px);min-width:126px;
+  transition:border-color .3s,transform .3s}
+.stat-card:hover{border-color:var(--glow);transform:translateX(-4px)}
+.stat-n{font-size:1.8rem;font-weight:900;font-family:var(--mono);
+  background:linear-gradient(135deg,var(--sf),var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-l{font-size:.66rem;color:var(--t2);text-transform:uppercase;letter-spacing:.12em;margin-top:3px}
+
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:var(--t3);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;z-index:1;
+  animation:fadein 1s 1.2s ease both}
+.scroll-line{width:1px;height:34px;background:linear-gradient(to bottom,var(--sf),transparent);
+  animation:scrl 2s ease-in-out infinite}
+@keyframes scrl{0%{opacity:0;transform:scaleY(0);transform-origin:top}50%{opacity:1;transform:scaleY(1)}100%{opacity:0;transform:scaleY(0);transform-origin:bottom}}
+
+/* TICKER */
+.ticker-wrap{overflow:hidden;padding:16px 0;background:var(--bg2);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative}
+.ticker-wrap::before,.ticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2}
+.ticker-wrap::before{left:0;background:linear-gradient(to right,var(--bg2),transparent)}
+.ticker-wrap::after{right:0;background:linear-gradient(to left,var(--bg2),transparent)}
+.ticker{display:flex;gap:36px;animation:tick 30s linear infinite;white-space:nowrap}
+.ti{display:flex;align-items:center;gap:7px;font-size:.73rem;font-weight:600;color:var(--t2)}
+.ti .d{width:4px;height:4px;background:var(--sf);border-radius:50%;flex-shrink:0}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* TRUSTED LOGOS */
+.trusted-wrap{
+  padding:18px 5%;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(1,118,211,.03),rgba(1,118,211,.01));
+}
+.trusted-title{
+  font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--t3);margin-bottom:14px;text-align:center
+}
+.trusted-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;align-items:center
+}
+.trusted-item{
+  height:50px;border:1px solid var(--border);border-radius:10px;background:var(--card);
+  display:flex;align-items:center;justify-content:center;padding:8px;transition:transform .25s,border-color .25s
+}
+.trusted-item:hover{transform:translateY(-2px);border-color:rgba(27,150,255,.4)}
+.trusted-item img{max-width:90px;max-height:26px;object-fit:contain;filter:grayscale(1) contrast(1.15) brightness(1.1);opacity:.88}
+.trusted-item:hover img{filter:none;opacity:1}
+
+/* SECTIONS */
+section{padding:96px 5%}
+.sec-lbl{display:inline-flex;align-items:center;gap:10px;font-size:.7rem;font-weight:700;
+  color:var(--sf);letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px}
+.sec-lbl::before{content:'';width:18px;height:1px;background:var(--sf)}
+.sec-title{font-size:clamp(1.8rem,4vw,2.9rem);font-weight:800;letter-spacing:-1.5px;
+  line-height:1.1;margin-bottom:12px}
+.sec-title .g{background:linear-gradient(135deg,var(--sf),var(--sf2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-sub{color:var(--t2);font-size:.95rem;max-width:520px;line-height:1.85;margin-bottom:52px}
+
+.reveal{opacity:0;transform:translateY(24px) scale(.99);filter:blur(6px);
+  transition:opacity .62s var(--ease),transform .62s var(--ease),filter .62s var(--ease)}
+.reveal.in{opacity:1;transform:none;filter:blur(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.18s}.d3{transition-delay:.26s}.d4{transition-delay:.34s}
+
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes fromright{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+
+/* ABOUT */
+#about{background:var(--bg2)}
+.about-grid{display:grid;grid-template-columns:360px 1fr;gap:64px;align-items:start}
+.avatar-box{position:relative;width:240px;height:240px;margin:0 auto 28px}
+.av-ring{position:absolute;inset:-3px;border-radius:50%;
+  background:conic-gradient(var(--sf),var(--sf2),var(--teal),var(--sf));
+  animation:spin 7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.av-inner{position:absolute;inset:3px;border-radius:50%;background:var(--bg2)}
+.av-face{position:absolute;inset:11px;border-radius:50%;
+  background:linear-gradient(135deg,#0c0c26,#161640);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:3.6rem;font-weight:900;letter-spacing:-3px;
+  background:linear-gradient(135deg,var(--sf),var(--sf2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.av-face-bg{position:absolute;inset:11px;border-radius:50%;background:linear-gradient(135deg,#0c0c26,#161640)}
+.avatar-photo{
+  position:absolute;inset:11px;border-radius:50%;
+  width:calc(100% - 22px);height:calc(100% - 22px);
+  object-fit:cover;z-index:2;border:2px solid rgba(27,150,255,.4)
+}
+
+.float-badges{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.fb{background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:7px 13px;font-size:.68rem;font-weight:700;color:var(--t2);
+  display:flex;align-items:center;gap:7px;transition:border-color .3s,color .3s}
+.fb:hover{border-color:var(--sf);color:var(--sf)}
+.fb-dot{width:5px;height:5px;border-radius:50%;background:var(--sf);flex-shrink:0}
+
+.about-text h3{font-size:1.55rem;font-weight:700;letter-spacing:-.5px;margin-bottom:14px}
+.about-text p{color:var(--t2);line-height:1.9;font-size:.94rem;margin-bottom:12px}
+.about-text b{color:var(--t1)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;margin-bottom:20px}
+.ii .k{font-size:.66rem;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px}
+.ii .v{font-size:.87rem;font-weight:600}
+.lang-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.lang-chip{padding:4px 12px;border-radius:20px;border:1px solid var(--border);
+  font-size:.74rem;font-weight:600;color:var(--t2);background:var(--card)}
+
+/* SKILLS */
+#skills{background:var(--bg)}
+.skills-outer{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px;margin-bottom:48px}
+.sk-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px;
+  position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s}
+.sk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--cc,var(--sf));transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.sk-card:hover{border-color:var(--glow);transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.sk-card:hover::before{transform:scaleX(1)}
+.sk-head{display:flex;align-items:center;gap:11px;margin-bottom:20px}
+.sk-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:900;letter-spacing:.03em;color:var(--sf2);border:1px solid rgba(27,150,255,.35)}
+.sk-name{font-size:.88rem;font-weight:700}
+.bw{margin-bottom:11px}
+.bt{display:flex;justify-content:space-between;margin-bottom:4px}
+.bn{font-size:.77rem;color:var(--t2);font-weight:500}
+.bp{font-size:.7rem;color:var(--sf);font-family:var(--mono);font-weight:700}
+.btrack{height:3px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden}
+.bfill{height:100%;border-radius:3px;width:0;transition:width 1.3s var(--ease);background:var(--bc,linear-gradient(90deg,var(--sf),var(--teal)))}
+
+/* tools section */
+.tools-section{margin-top:0}
+.tools-title{font-size:.78rem;font-weight:700;color:var(--t2);text-transform:uppercase;
+  letter-spacing:.12em;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.tools-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.tools-grid{display:flex;flex-wrap:wrap;gap:10px}
+.tool-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;
+  border-radius:6px;border:1px solid var(--border);background:var(--card);
+  font-size:.75rem;font-weight:600;color:var(--t2);
+  transition:border-color .3s,color .3s,transform .2s}
+.tool-pill:hover{border-color:var(--sf2);color:var(--sf2);transform:translateY(-2px)}
+.tool-pill .ic{
+  width:18px;height:18px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.58rem;font-weight:800;letter-spacing:.02em;
+  background:rgba(1,118,211,.16);color:var(--sf2);border:1px solid rgba(27,150,255,.35)
+}
+
+/* tags */
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.tag{font-size:.68rem;font-weight:600;padding:3px 9px;border-radius:4px;letter-spacing:.03em}
+.tb{background:rgba(1,118,211,.08);border:1px solid rgba(1,118,211,.2);color:var(--sf)}
+.ts{background:rgba(27,150,255,.08);border:1px solid rgba(27,150,255,.2);color:var(--sf2)}
+.tv{background:rgba(123,97,255,.08);border:1px solid rgba(123,97,255,.25);color:var(--violet)}
+.tg{background:rgba(46,132,74,.12);border:1px solid rgba(46,132,74,.3);color:#4CAF50}
+.tt{background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.25);color:var(--teal)}
+.tgo{background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.25);color:var(--gold)}
+.tr{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.25);color:var(--red)}
+
+/* EXPERIENCE */
+#experience{background:var(--bg2)}
+.tl{position:relative;padding-left:42px}
+.tl::before{content:'';position:absolute;left:13px;top:10px;bottom:0;width:1px;
+  background:linear-gradient(to bottom,var(--sf) 0%,transparent 100%)}
+.tli{position:relative;margin-bottom:44px}
+.tli:last-child{margin-bottom:0}
+.tld{position:absolute;left:-37px;top:10px;width:12px;height:12px;border-radius:50%;
+  background:var(--sf);border:2px solid var(--bg2);
+  box-shadow:0 0 0 4px rgba(1,118,211,.12);z-index:1}
+.tld.live{background:#00E676;box-shadow:0 0 0 4px rgba(0,230,118,.12);
+  animation:plive 2.2s ease-in-out infinite}
+@keyframes plive{0%,100%{box-shadow:0 0 0 4px rgba(0,230,118,.12)}50%{box-shadow:0 0 0 9px rgba(0,230,118,.04)}}
+.tlc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:24px 28px;transition:border-color .3s,transform .3s}
+.tlc:hover{border-color:var(--glow);transform:translateX(5px)}
+.tlh{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:9px;margin-bottom:5px}
+.tlr{font-size:1rem;font-weight:700;letter-spacing:-.3px}
+.tlp{font-size:.7rem;font-family:var(--mono);color:var(--sf);
+  padding:3px 10px;background:rgba(1,118,211,.1);border-radius:20px;font-weight:600}
+.tlco{font-size:.82rem;color:var(--sf);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.tlco .loc{color:var(--t3);font-weight:400;font-size:.76rem}
+.tlb{list-style:none;margin:8px 0 14px}
+.tlb li{color:var(--t2);font-size:.82rem;padding:4px 0 4px 14px;position:relative;border-bottom:1px solid var(--border)}
+.tlb li:last-child{border-bottom:none}
+.tlb li::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:5px;height:5px;background:var(--sf);border-radius:50%}
+.tlst{font-size:.7rem;color:var(--t3);margin-top:12px;font-family:var(--mono);line-height:1.7}
+.tlst b{color:var(--t2)}
+
+/* PROJECTS */
+#projects{background:var(--bg)}
+.proj-company-block{margin-bottom:56px}
+.company-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.company-logo-pill{display:flex;align-items:center;gap:10px;padding:8px 18px;
+  border:1px solid var(--border);border-radius:30px;background:var(--card);
+  font-size:.8rem;font-weight:700;color:var(--t1)}
+.company-logo-pill .cmp-logo{
+  width:20px;height:20px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;
+  font-size:.56rem;font-weight:900;letter-spacing:.02em;background:rgba(1,118,211,.15);color:var(--sf2);
+  border:1px solid rgba(27,150,255,.35)
+}
+.company-role-tag{font-size:.72rem;color:var(--t2);font-weight:500}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.proj-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  overflow:hidden;transition:border-color .3s,transform .35s,box-shadow .35s;position:relative}
+.proj-card:hover{border-color:var(--glow);transform:translateY(-7px);box-shadow:0 25px 65px rgba(0,0,0,.4)}
+.proj-card.featured-card{grid-column:1/-1;display:grid;grid-template-columns:1.3fr 1fr}
+.proj-thumb{height:180px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.proj-card.featured-card .proj-thumb{height:auto;min-height:240px}
+.proj-emoji{
+  width:88px;height:88px;border-radius:22px;display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:1;font-size:1.1rem;font-weight:900;letter-spacing:.06em;
+  border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:#d6e9ff
+}
+.proj-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(4,4,14,.92))}
+.feat-label{position:absolute;top:12px;left:12px;
+  background:linear-gradient(135deg,var(--sf),var(--sf2));
+  color:#fff;font-size:.63rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.1em;text-transform:uppercase}
+.proj-body{padding:22px}
+.proj-card.featured-card .proj-body{padding:36px 32px}
+.proj-icon{width:38px;height:38px;border-radius:9px;background:rgba(1,118,211,.08);
+  border:1px solid rgba(1,118,211,.15);display:flex;align-items:center;justify-content:center;
+  font-size:.62rem;font-weight:900;letter-spacing:.03em;margin-bottom:12px;color:var(--sf2)}
+.proj-name{font-size:1rem;font-weight:700;margin-bottom:7px;letter-spacing:-.3px;line-height:1.3}
+.proj-card.featured-card .proj-name{font-size:1.45rem}
+.proj-desc{font-size:.81rem;color:var(--t2);line-height:1.8;margin-bottom:16px}
+.proj-hl{list-style:none;margin-bottom:16px}
+.proj-hl li{font-size:.79rem;color:var(--t2);padding:4px 0 4px 14px;position:relative;border-bottom:1px solid var(--border)}
+.proj-hl li:last-child{border-bottom:none}
+.proj-hl li::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--sf);border-radius:50%}
+.proj-impact{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0;padding:12px;
+  background:rgba(1,118,211,.04);border-radius:8px;border:1px solid rgba(1,118,211,.1)}
+.impact-item{display:flex;flex-direction:column;align-items:center;min-width:70px}
+.impact-num{font-size:1.1rem;font-weight:900;font-family:var(--mono);
+  background:linear-gradient(135deg,var(--sf),var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.impact-lbl{font-size:.64rem;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+/* CERTIFICATIONS */
+#certifications{background:var(--bg2)}
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.cert-card{border-radius:var(--r);overflow:hidden;
+  transition:transform .35s,box-shadow .35s;cursor:default;position:relative}
+.cert-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.cert-header{padding:22px 20px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative}
+.cert-badge-svg{display:none;width:72px;height:72px;flex-shrink:0}
+.cert-badge-img{width:180px;height:34px;object-fit:contain;border-radius:8px}
+.cert-hname{font-size:.82rem;font-weight:800;text-align:center;line-height:1.35;letter-spacing:-.2px}
+.cert-footer{padding:12px 20px;display:flex;justify-content:space-between;align-items:center}
+.cert-issuer-lbl{font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;opacity:.7}
+.cert-date{font-size:.68rem;font-family:var(--mono);font-weight:700;opacity:.9}
+.sf-cloud-svg{display:block;width:28px;height:20px;margin:0 auto 6px}
+
+/* AWARDS */
+#awards{background:var(--bg)}
+.awards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.award-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:20px;display:flex;align-items:flex-start;gap:13px;
+  transition:border-color .3s,transform .3s}
+.award-card:hover{border-color:rgba(240,165,0,.3);transform:translateY(-3px)}
+.award-ico{
+  width:34px;height:34px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:900;letter-spacing:.03em;
+  color:#ffd98a;background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.35)
+}
+.award-name{font-size:.86rem;font-weight:700;margin-bottom:3px;line-height:1.35}
+.award-meta{font-size:.7rem;color:var(--t3)}
+
+/* RECOMMENDATIONS */
+#recommendations{background:var(--bg2)}
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
+.rec-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:30px;position:relative;overflow:hidden;
+  transition:border-color .3s,transform .3s}
+.rec-card:hover{border-color:var(--glow);transform:translateY(-4px)}
+.rec-card::before{content:'\201C';position:absolute;top:-10px;left:18px;
+  font-size:8rem;color:rgba(1,118,211,.08);font-family:Georgia,serif;line-height:1;pointer-events:none}
+.rec-text{font-size:.88rem;color:var(--t2);line-height:1.9;margin-bottom:20px;position:relative;z-index:1;font-style:italic}
+.rec-author{display:flex;align-items:flex-start;gap:13px}
+.rec-avatar{width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sf3),var(--sf));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:800;color:#fff;flex-shrink:0}
+.rec-photo{
+  width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;
+  border:2px solid var(--sf)
+}
+.rec-name{font-size:.88rem;font-weight:700}
+.rec-name a{color:var(--t1);text-decoration:none}
+.rec-name a:hover{color:var(--sf2)}
+.rec-role{font-size:.74rem;color:var(--t3)}
+.rec-stars{display:none}
+.li-badge{display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;border:1px solid rgba(1,118,211,.2);
+  background:rgba(1,118,211,.06);font-size:.64rem;font-weight:700;color:var(--sf);
+  margin-top:8px}
+
+/* CONTACT */
+#contact{background:var(--bg)}
+.contact-wrap{max-width:660px;margin:0 auto;text-align:center}
+.contact-wrap .sec-lbl{justify-content:center}
+.contact-wrap .sec-lbl::before{display:none}
+.contact-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:46px 34px;position:relative;overflow:hidden;margin-top:32px}
+.contact-card::before{content:'';position:absolute;top:-40%;left:-20%;
+  width:480px;height:480px;
+  background:radial-gradient(circle,rgba(1,118,211,.05) 0%,transparent 70%);pointer-events:none}
+.contact-name{font-size:1.35rem;font-weight:800;letter-spacing:-.5px;margin-bottom:5px}
+.contact-role{font-size:.86rem;color:var(--t2);margin-bottom:3px}
+.contact-loc{font-size:.78rem;color:var(--t3);margin-bottom:26px}
+.contact-links{display:flex;flex-wrap:wrap;gap:11px;justify-content:center}
+.cl{display:flex;align-items:center;gap:8px;padding:10px 20px;
+  border:1px solid var(--border);border-radius:var(--r2);
+  font-size:.82rem;font-weight:600;color:var(--t2);
+  transition:border-color .3s,color .3s,transform .2s}
+.cl:hover{border-color:var(--sf);color:var(--sf);transform:translateY(-2px)}
+.cl svg{width:15px;height:15px}
+
+/* FOOTER */
+footer{padding:22px 5%;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+footer p{font-size:.72rem;color:var(--t3)}
+.footer-logo{font-family:var(--mono);font-size:.88rem;font-weight:700;
+  background:linear-gradient(135deg,var(--sf),var(--sf2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* CURSOR */
+#cg{display:none}
+
+/* CLOUD EXPERTISE */
+.clouds-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.cloud-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px;
+  position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+.cloud-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--cc,var(--sf));transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.cloud-card:hover{border-color:var(--glow);transform:translateY(-4px)}
+.cloud-card:hover::before{transform:scaleX(1)}
+.cloud-icon{
+  width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:10px;font-size:.68rem;font-weight:900;letter-spacing:.03em;
+  background:rgba(1,118,211,.12);color:var(--sf2);border:1px solid rgba(27,150,255,.35)
+}
+.cloud-name{font-size:.92rem;font-weight:800;margin-bottom:12px;color:var(--cc,var(--sf))}
+.cloud-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.cloud-list li{font-size:.78rem;color:var(--t2);padding-left:12px;position:relative}
+.cloud-list li::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:4px;height:4px;background:var(--cc,var(--sf));border-radius:50%}
+
+/* TECHNICAL DEPTH */
+.depth-grid{display:flex;flex-direction:column;gap:22px}
+.depth-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:28px;
+  transition:border-color .3s,transform .3s}
+.depth-card:hover{border-color:var(--glow);transform:translateY(-3px)}
+.depth-head{display:flex;align-items:center;gap:14px;margin-bottom:22px;
+  padding-bottom:16px;border-bottom:1px solid var(--border)}
+.depth-icon{
+  width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:.62rem;font-weight:900;letter-spacing:.03em;flex-shrink:0;color:var(--sf2);
+  border:1px solid rgba(27,150,255,.35)
+}
+.depth-title{font-size:1rem;font-weight:700;margin-bottom:2px}
+.depth-sub{font-size:.74rem;color:var(--t3)}
+.depth-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px}
+.depth-col-title{font-size:.74rem;font-weight:700;color:var(--sf);text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.depth-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.depth-list li{font-size:.78rem;color:var(--t2);padding-left:12px;position:relative;line-height:1.5}
+.depth-list li::before{content:'';position:absolute;left:0;top:7px;width:4px;height:4px;
+  background:var(--sf2);border-radius:50%}
+
+/* RESPONSIVE */
+@media(max-width:1000px){.hero-stats{display:none}.about-grid{grid-template-columns:1fr}}
+@media(max-width:680px){
+  .nav-links{display:none}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;
+    background:rgba(4,4,14,.97);padding:20px 5%;gap:16px;border-bottom:1px solid var(--border)}
+  .hamburger{display:flex}
+  .hero-actions{flex-direction:column}
+  .btn{justify-content:center}
+  .proj-card.featured-card{grid-template-columns:1fr}
+  .proj-grid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important;transition:none !important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">SFDC.ST</div>
+  <ul class="nav-links" id="nl">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#clouds">Clouds</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#recommendations">Reviews</a></li>
+    <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('nl').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="pts"></canvas>
+  <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+  <div class="hero-inner">
+    <div class="live-badge"><span class="live-dot"></span> Available for Senior Roles</div>
+    <h1 class="hero-name">Satyam<br/><span class="g">Tiwari</span></h1>
+    <p class="hero-role"><b>Senior Salesforce Developer</b> &nbsp;·&nbsp; B2B Commerce Cloud Specialist &nbsp;·&nbsp; LWC Architect</p>
+    <div class="pills">
+      <span class="pill"><span class="pd"></span> Nagarro — L'Oreal B2B Commerce</span>
+      <span class="pill">Ex-Deloitte &nbsp;|&nbsp; Accenture &nbsp;|&nbsp; TCS</span>
+      <span class="pill">Gurugram, India</span>
+    </div>
+    <p class="hero-desc">
+      Certified Salesforce Developer with <b>7+ years</b> delivering enterprise-grade solutions across
+      B2B Commerce Cloud, Sales Cloud, and Service Cloud. Expert in LWC architecture, Apex optimization,
+      and CI/CD — building digital commerce experiences for global brands like <b>L'Oreal, Imperial Brands,</b> and <b>Unilever International.</b>
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-p"><span>View My Work</span><span>&#8594;</span></a>
+      <a href="#contact" class="btn btn-g">Get In Touch</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card"><div class="stat-n" data-count="7">0</div><div class="stat-l">Years Exp.</div></div>
+    <div class="stat-card"><div class="stat-n" data-count="3">0</div><div class="stat-l">Top Firms</div></div>
+    <div class="stat-card"><div class="stat-n" data-count="5">0</div><div class="stat-l">Certifications</div></div>
+    <div class="stat-card"><div class="stat-n" data-count="500">0</div><div class="stat-l">LI Connections</div></div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker" id="tkr">
+    <span class="ti"><span class="d"></span>Salesforce B2B Commerce Cloud</span>
+    <span class="ti"><span class="d"></span>Lightning Web Components</span>
+    <span class="ti"><span class="d"></span>Apex &amp; Governor Limits</span>
+    <span class="ti"><span class="d"></span>Dynamic Page Experiences</span>
+    <span class="ti"><span class="d"></span>Azure DevOps &amp; Bitbucket</span>
+    <span class="ti"><span class="d"></span>Rebate Management</span>
+    <span class="ti"><span class="d"></span>Salesforce CPQ</span>
+    <span class="ti"><span class="d"></span>REST &amp; SOAP APIs</span>
+    <span class="ti"><span class="d"></span>Flow &amp; Process Automation</span>
+    <span class="ti"><span class="d"></span>Salesforce CLI / SFDX</span>
+    <span class="ti"><span class="d"></span>Platform Events</span>
+    <span class="ti"><span class="d"></span>OOP Design Patterns</span>
+    <span class="ti"><span class="d"></span>Salesforce B2B Commerce Cloud</span>
+    <span class="ti"><span class="d"></span>Lightning Web Components</span>
+    <span class="ti"><span class="d"></span>Apex &amp; Governor Limits</span>
+    <span class="ti"><span class="d"></span>Dynamic Page Experiences</span>
+    <span class="ti"><span class="d"></span>Azure DevOps &amp; Bitbucket</span>
+    <span class="ti"><span class="d"></span>Rebate Management</span>
+    <span class="ti"><span class="d"></span>Salesforce CPQ</span>
+    <span class="ti"><span class="d"></span>REST &amp; SOAP APIs</span>
+    <span class="ti"><span class="d"></span>Flow &amp; Process Automation</span>
+    <span class="ti"><span class="d"></span>Salesforce CLI / SFDX</span>
+    <span class="ti"><span class="d"></span>Platform Events</span>
+    <span class="ti"><span class="d"></span>OOP Design Patterns</span>
+  </div>
+</div>
+
+<!-- TRUSTED COMPANIES -->
+<div class="trusted-wrap">
+  <div class="trusted-title">Employers & Client Brands</div>
+  <div class="trusted-grid">
+    <div class="trusted-item"><img src="Nagarro_Logo.jpg" alt="Nagarro logo" loading="lazy"/></div>
+    <div class="trusted-item"><img src="Deloitte logo.png" alt="Deloitte logo" loading="lazy"/></div>
+    <div class="trusted-item"><img src="Accenture logo.png" alt="Accenture logo" loading="lazy"/></div>
+    <div class="trusted-item"><img src="TCS logo.png" alt="TCS logo" loading="lazy"/></div>
+    <div class="trusted-item"><img src="L%E2%80%99Oreal%20logo.jpg" alt="L'Oreal logo" loading="lazy"/></div>
+    <div class="trusted-item"><img src="Unilever logo.webp" alt="Unilever logo" loading="lazy"/></div>
+    <div class="trusted-item"><img src="Linde logo.png" alt="Linde logo" loading="lazy"/></div>
+    <div class="trusted-item"><img src="Imperial Brands logo.jpg" alt="Imperial Brands logo" loading="lazy"/></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="avatar-box">
+        <div class="av-ring"></div><div class="av-inner"></div>
+        <div class="av-face-bg"></div>
+        <img class="avatar-photo" src="my%20photot.jpeg" alt="Satyam Tiwari photo" />
+      </div>
+      <div class="float-badges">
+        <div class="fb"><span class="fb-dot"></span> Salesforce PD II &mdash; Aug 2024</div>
+        <div class="fb"><span class="fb-dot" style="background:var(--violet)"></span> AI Associate &mdash; Oct 2024</div>
+        <div class="fb"><span class="fb-dot" style="background:var(--teal)"></span> PD I &mdash; Jun 2022</div>
+        <div class="fb"><span class="fb-dot" style="background:var(--gold)"></span> JS Developer I &mdash; Apr 2022</div>
+        <div class="fb"><span class="fb-dot" style="background:var(--emerald)"></span> Admin &mdash; Jan 2022</div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="sec-lbl reveal">About Me</div>
+      <h2 class="sec-title reveal">Building Enterprise<br/><span class="g">Commerce at Scale</span></h2>
+      <p class="reveal">
+        I'm a <b>Senior Salesforce Developer</b> currently at <b>Nagarro</b>, working on
+        <b>L'Oreal's B2B Commerce Cloud platform</b> — developing new Lightning Web Components,
+        resolving code quality issues, and architecting scalable Apex services for seamless B2B commerce experiences.
+      </p>
+      <p class="reveal d1">
+        With 7+ years across <b>TCS, Accenture, and Deloitte</b>, I've delivered enterprise solutions for global
+        brands including <b>Unilever International</b> and <b>Imperial Brands</b>. I specialize in
+        B2B storefront development, Dynamic Page Experiences (DPE), governor limits optimization,
+        and modern CI/CD using Azure DevOps and Bitbucket.
+      </p>
+      <p class="reveal d2">
+        Holder of <b>5 Salesforce certifications</b> including Platform Developer II, AI Associate, and
+        JavaScript Developer I. CGPA 8.08, B.E. in Information Technology. <b>2,000+ LinkedIn followers,
+        500+ professional connections.</b>
+      </p>
+      <div class="info-grid reveal d3">
+        <div class="ii"><div class="k">Current Company</div><div class="v">Nagarro</div></div>
+        <div class="ii"><div class="k">Location</div><div class="v">Gurugram, Haryana</div></div>
+        <div class="ii"><div class="k">Email</div><div class="v">satyamt37@gmail.com</div></div>
+        <div class="ii"><div class="k">Phone</div><div class="v">+91 8959459494</div></div>
+        <div class="ii"><div class="k">LinkedIn</div><div class="v">linkedin.com/in/satyamt37</div></div>
+        <div class="ii"><div class="k">Education</div><div class="v">B.E. IT — CGPA 8.08</div></div>
+        <div class="ii"><div class="k">University</div><div class="v">Technocrats Inst., Bhopal</div></div>
+        <div class="ii"><div class="k">Batch</div><div class="v">2014 - 2018</div></div>
+      </div>
+      <div class="lang-row reveal">
+        <span class="lang-chip">English — Professional</span>
+        <span class="lang-chip">Hindi — Native</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-lbl reveal">Technical Arsenal</div>
+  <h2 class="sec-title reveal">Skills &amp; <span class="g">Expertise</span></h2>
+  <p class="sec-sub reveal">Mastery across the full Salesforce ecosystem — from B2B Commerce storefront to Apex backend, DevOps pipelines, and modern JavaScript.</p>
+
+  <div class="skills-outer">
+    <div class="sk-card reveal" style="--cc:var(--sf)">
+      <div class="sk-head"><div class="sk-icon" style="background:rgba(1,118,211,.1)">SF</div><span class="sk-name">Salesforce Platform</span></div>
+      <div class="bw"><div class="bt"><span class="bn">Apex &amp; Trigger Frameworks</span><span class="bp">96%</span></div><div class="btrack"><div class="bfill" data-w="96" style="--bc:linear-gradient(90deg,#0176D3,#1B96FF)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">SOQL / SOSL Optimization</span><span class="bp">94%</span></div><div class="btrack"><div class="bfill" data-w="94" style="--bc:linear-gradient(90deg,#0176D3,#1B96FF)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Governor Limits Mastery</span><span class="bp">95%</span></div><div class="btrack"><div class="bfill" data-w="95" style="--bc:linear-gradient(90deg,#0176D3,#1B96FF)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Flows &amp; Process Automation</span><span class="bp">91%</span></div><div class="btrack"><div class="bfill" data-w="91" style="--bc:linear-gradient(90deg,#0176D3,#1B96FF)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Platform Events / CDC</span><span class="bp">87%</span></div><div class="btrack"><div class="bfill" data-w="87" style="--bc:linear-gradient(90deg,#0176D3,#1B96FF)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">OOP &amp; Design Patterns</span><span class="bp">92%</span></div><div class="btrack"><div class="bfill" data-w="92" style="--bc:linear-gradient(90deg,#0176D3,#1B96FF)"></div></div></div>
+    </div>
+
+    <div class="sk-card reveal d1" style="--cc:var(--violet)">
+      <div class="sk-head"><div class="sk-icon" style="background:rgba(123,97,255,.1)">B2B</div><span class="sk-name">B2B Commerce Cloud</span></div>
+      <div class="bw"><div class="bt"><span class="bn">B2B Storefront &amp; DPE</span><span class="bp">93%</span></div><div class="btrack"><div class="bfill" data-w="93" style="--bc:linear-gradient(90deg,#7B61FF,#b985ff)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Buyer Account &amp; Entitlements</span><span class="bp">90%</span></div><div class="btrack"><div class="bfill" data-w="90" style="--bc:linear-gradient(90deg,#7B61FF,#b985ff)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Checkout &amp; Cart Flows</span><span class="bp">88%</span></div><div class="btrack"><div class="bfill" data-w="88" style="--bc:linear-gradient(90deg,#7B61FF,#b985ff)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Product &amp; Catalog Config</span><span class="bp">89%</span></div><div class="btrack"><div class="bfill" data-w="89" style="--bc:linear-gradient(90deg,#7B61FF,#b985ff)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Rebate Management</span><span class="bp">85%</span></div><div class="btrack"><div class="bfill" data-w="85" style="--bc:linear-gradient(90deg,#7B61FF,#b985ff)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Salesforce CPQ</span><span class="bp">86%</span></div><div class="btrack"><div class="bfill" data-w="86" style="--bc:linear-gradient(90deg,#7B61FF,#b985ff)"></div></div></div>
+    </div>
+
+    <div class="sk-card reveal d2" style="--cc:var(--teal)">
+      <div class="sk-head"><div class="sk-icon" style="background:rgba(6,182,212,.1)">LWC</div><span class="sk-name">LWC &amp; Frontend</span></div>
+      <div class="bw"><div class="bt"><span class="bn">Lightning Web Components</span><span class="bp">96%</span></div><div class="btrack"><div class="bfill" data-w="96" style="--bc:linear-gradient(90deg,#06B6D4,#1B96FF)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">JavaScript ES6+ / Async</span><span class="bp">91%</span></div><div class="btrack"><div class="bfill" data-w="91" style="--bc:linear-gradient(90deg,#06B6D4,#1B96FF)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Wire Service &amp; Adapters</span><span class="bp">92%</span></div><div class="btrack"><div class="bfill" data-w="92" style="--bc:linear-gradient(90deg,#06B6D4,#1B96FF)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">SLDS / HTML / CSS3</span><span class="bp">88%</span></div><div class="btrack"><div class="bfill" data-w="88" style="--bc:linear-gradient(90deg,#06B6D4,#1B96FF)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">AngularJS / Node.js</span><span class="bp">80%</span></div><div class="btrack"><div class="bfill" data-w="80" style="--bc:linear-gradient(90deg,#06B6D4,#1B96FF)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Ionic / Cordova (Mobile)</span><span class="bp">76%</span></div><div class="btrack"><div class="bfill" data-w="76" style="--bc:linear-gradient(90deg,#06B6D4,#1B96FF)"></div></div></div>
+    </div>
+
+    <div class="sk-card reveal d3" style="--cc:var(--emerald)">
+      <div class="sk-head"><div class="sk-icon" style="background:rgba(0,230,118,.08)">DEV</div><span class="sk-name">DevOps &amp; Integration</span></div>
+      <div class="bw"><div class="bt"><span class="bn">Azure DevOps / Bitbucket</span><span class="bp">92%</span></div><div class="btrack"><div class="bfill" data-w="92" style="--bc:linear-gradient(90deg,#00E676,#06B6D4)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Salesforce CLI / SFDX</span><span class="bp">91%</span></div><div class="btrack"><div class="bfill" data-w="91" style="--bc:linear-gradient(90deg,#00E676,#06B6D4)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">REST / SOAP Integration</span><span class="bp">89%</span></div><div class="btrack"><div class="bfill" data-w="89" style="--bc:linear-gradient(90deg,#00E676,#06B6D4)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Data Migration (Loader)</span><span class="bp">88%</span></div><div class="btrack"><div class="bfill" data-w="88" style="--bc:linear-gradient(90deg,#00E676,#06B6D4)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Batch Classes &amp; Scheduling</span><span class="bp">90%</span></div><div class="btrack"><div class="bfill" data-w="90" style="--bc:linear-gradient(90deg,#00E676,#06B6D4)"></div></div></div>
+      <div class="bw"><div class="bt"><span class="bn">Security &amp; Access Control</span><span class="bp">87%</span></div><div class="btrack"><div class="bfill" data-w="87" style="--bc:linear-gradient(90deg,#00E676,#06B6D4)"></div></div></div>
+    </div>
+  </div>
+
+  <div class="tools-section reveal">
+    <div class="tools-title">Tools &amp; Utilities</div>
+    <div class="tools-grid">
+      <span class="tool-pill"><span class="ic">VS</span> VS Code</span>
+      <span class="tool-pill"><span class="ic">CLI</span> Salesforce CLI</span>
+      <span class="tool-pill"><span class="ic">INS</span> Salesforce Inspector</span>
+      <span class="tool-pill"><span class="ic">WB</span> Workbench</span>
+      <span class="tool-pill"><span class="ic">DL</span> Data Loader</span>
+      <span class="tool-pill"><span class="ic">GH</span> GitHub Desktop</span>
+      <span class="tool-pill"><span class="ic">AZ</span> Azure DevOps</span>
+      <span class="tool-pill"><span class="ic">BB</span> Bitbucket</span>
+      <span class="tool-pill"><span class="ic">CD</span> Chrome Debugger</span>
+      <span class="tool-pill"><span class="ic">AS</span> Android Studio</span>
+      <span class="tool-pill"><span class="ic">XL</span> MS Excel</span>
+      <span class="tool-pill"><span class="ic">LDS</span> Lightning Studio</span>
+      <span class="tool-pill"><span class="ic">JR</span> Jira</span>
+      <span class="tool-pill"><span class="ic">ANT</span> ANT Migration Tool</span>
+    </div>
+  </div>
+</section>
+
+<!-- CLOUD EXPERTISE -->
+<section id="clouds" style="background:var(--bg2)">
+  <div class="sec-lbl reveal">Platform Breadth</div>
+  <h2 class="sec-title reveal">Salesforce <span class="g">Cloud Expertise</span></h2>
+  <p class="sec-sub reveal">Deep hands-on delivery across 6 Salesforce clouds — from storefront commerce to field automation, rebates, and loyalty programs.</p>
+  <div class="clouds-grid">
+    <div class="cloud-card reveal" style="--cc:#0176D3">
+      <div class="cloud-icon">SC</div>
+      <div class="cloud-name">Sales Cloud</div>
+      <ul class="cloud-list">
+        <li>Opportunity lifecycle &amp; stage automation</li>
+        <li>Lead conversion &amp; assignment rules</li>
+        <li>Territory &amp; account hierarchy management</li>
+        <li>Product catalog, pricing &amp; quote automation</li>
+        <li>Sales pipeline dashboards (LWC)</li>
+      </ul>
+    </div>
+    <div class="cloud-card reveal d1" style="--cc:#06B6D4">
+      <div class="cloud-icon">SV</div>
+      <div class="cloud-name">Service Cloud</div>
+      <ul class="cloud-list">
+        <li>Case lifecycle &amp; SLA escalation automation</li>
+        <li>Omni-Channel routing &amp; queue management</li>
+        <li>Knowledge base management</li>
+        <li>Customer support LWC dashboards</li>
+        <li>Case assignment &amp; entitlement rules</li>
+      </ul>
+    </div>
+    <div class="cloud-card reveal d2" style="--cc:#7B61FF">
+      <div class="cloud-icon">B2B</div>
+      <div class="cloud-name">B2B Commerce Cloud</div>
+      <ul class="cloud-list">
+        <li>Storefront UI via LWC &amp; Dynamic Page Experiences</li>
+        <li>Custom checkout validation &amp; cart APIs</li>
+        <li>Customer-specific pricing &amp; tiered discounts</li>
+        <li>Buyer account &amp; entitlement configuration</li>
+        <li>Order lifecycle automation &amp; ERP integration</li>
+      </ul>
+    </div>
+    <div class="cloud-card reveal d3" style="--cc:#2E844A">
+      <div class="cloud-icon">EXP</div>
+      <div class="cloud-name">Experience Cloud</div>
+      <ul class="cloud-list">
+        <li>Partner &amp; customer self-service portals</li>
+        <li>Custom LWC-based portal components</li>
+        <li>Community user authentication &amp; security</li>
+        <li>Secure document sharing &amp; content management</li>
+        <li>Guest user access control</li>
+      </ul>
+    </div>
+    <div class="cloud-card reveal d1" style="--cc:#F0A500">
+      <div class="cloud-icon">LOY</div>
+      <div class="cloud-name">Loyalty Management</div>
+      <ul class="cloud-list">
+        <li>Loyalty program setup &amp; tier management</li>
+        <li>Member enrollment &amp; onboarding automation</li>
+        <li>Points accrual &amp; redemption logic (Apex)</li>
+        <li>Campaign integrations &amp; promotional rules</li>
+        <li>Financial reporting dashboards</li>
+      </ul>
+    </div>
+    <div class="cloud-card reveal d2" style="--cc:#E74C3C">
+      <div class="cloud-icon">REB</div>
+      <div class="cloud-name">Rebate Management</div>
+      <ul class="cloud-list">
+        <li>Partner rebate program configuration</li>
+        <li>Rebate calculation via Batch Apex</li>
+        <li>Automated rebate claim &amp; approval workflows</li>
+        <li>Partner incentive tracking dashboards</li>
+        <li>Financial reconciliation &amp; reporting</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNICAL DEPTH -->
+<section id="technical" style="background:var(--bg)">
+  <div class="sec-lbl reveal">Architecture &amp; Patterns</div>
+  <h2 class="sec-title reveal">Technical <span class="g">Deep Dive</span></h2>
+  <p class="sec-sub reveal">Enterprise-grade Apex architecture, advanced LWC patterns, and proven DevOps practices adopted across Fortune 500 projects.</p>
+
+  <div class="depth-grid">
+
+    <!-- Apex Architecture -->
+    <div class="depth-card reveal">
+      <div class="depth-head">
+        <div class="depth-icon" style="background:rgba(1,118,211,.1)">APX</div>
+        <div>
+          <div class="depth-title">Apex Architecture Patterns</div>
+          <div class="depth-sub">Enterprise-grade backend design</div>
+        </div>
+      </div>
+      <div class="depth-cols">
+        <div class="depth-col">
+          <div class="depth-col-title">Trigger Framework</div>
+          <ul class="depth-list">
+            <li>One trigger per object rule</li>
+            <li>Trigger Handler classes</li>
+            <li>Context-based execution</li>
+            <li>Recursion control (static vars)</li>
+            <li>Selector / Service / Domain pattern</li>
+          </ul>
+        </div>
+        <div class="depth-col">
+          <div class="depth-col-title">Async Processing</div>
+          <ul class="depth-list">
+            <li>Batch Apex (100K+ records)</li>
+            <li>Queueable Apex (chained jobs)</li>
+            <li>Future Methods (callouts)</li>
+            <li>Scheduled Apex</li>
+            <li>Platform Events &amp; CDC</li>
+          </ul>
+        </div>
+        <div class="depth-col">
+          <div class="depth-col-title">Bulk Best Practices</div>
+          <ul class="depth-list">
+            <li>No SOQL / DML in loops</li>
+            <li>Map / Set-based processing</li>
+            <li>Governor limits optimization</li>
+            <li>Dynamic SOQL &amp; schema</li>
+            <li>Transaction control &amp; rollbacks</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- LWC Architecture -->
+    <div class="depth-card reveal d1">
+      <div class="depth-head">
+        <div class="depth-icon" style="background:rgba(6,182,212,.1)">LWC</div>
+        <div>
+          <div class="depth-title">LWC Architecture Patterns</div>
+          <div class="depth-sub">Modern reactive component design</div>
+        </div>
+      </div>
+      <div class="depth-cols">
+        <div class="depth-col">
+          <div class="depth-col-title">Component Comm.</div>
+          <ul class="depth-list">
+            <li>@api (Parent â†’ Child)</li>
+            <li>Custom Events (Child â†’ Parent)</li>
+            <li>Lightning Message Service</li>
+            <li>PubSub pattern</li>
+            <li>Wire adapters &amp; reactive props</li>
+          </ul>
+        </div>
+        <div class="depth-col">
+          <div class="depth-col-title">Advanced Components</div>
+          <ul class="depth-list">
+            <li>Multi-select picklist (reusable)</li>
+            <li>Dynamic data tables</li>
+            <li>Modal-based interactions</li>
+            <li>File upload &amp; doc management</li>
+            <li>Real-time updates via Platform Events</li>
+          </ul>
+        </div>
+        <div class="depth-col">
+          <div class="depth-col-title">Quality &amp; Testing</div>
+          <ul class="depth-list">
+            <li>Jest unit testing (90%+ coverage)</li>
+            <li>@wire mocking</li>
+            <li>Lifecycle hook management</li>
+            <li>SLDS-compliant styling</li>
+            <li>Accessibility (ARIA) patterns</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Integration & Security -->
+    <div class="depth-card reveal d2">
+      <div class="depth-head">
+        <div class="depth-icon" style="background:rgba(0,230,118,.08)">INT</div>
+        <div>
+          <div class="depth-title">Integration &amp; Security</div>
+          <div class="depth-sub">Secure, robust API architecture</div>
+        </div>
+      </div>
+      <div class="depth-cols">
+        <div class="depth-col">
+          <div class="depth-col-title">Integration Patterns</div>
+          <ul class="depth-list">
+            <li>REST API (Apex HTTP callouts)</li>
+            <li>SOAP / WSDL integrations</li>
+            <li>Named Credentials (OAuth 2.0)</li>
+            <li>Platform Events (event-driven)</li>
+            <li>Retry logic &amp; error handling</li>
+          </ul>
+        </div>
+        <div class="depth-col">
+          <div class="depth-col-title">Security Model</div>
+          <ul class="depth-list">
+            <li>OWD Private â†’ sharing rules</li>
+            <li>Role hierarchy design</li>
+            <li>Permission Sets &amp; Groups</li>
+            <li>Field-Level Security (FLS)</li>
+            <li>CRUD / FLS enforcement in Apex</li>
+          </ul>
+        </div>
+        <div class="depth-col">
+          <div class="depth-col-title">DevOps Pipeline</div>
+          <ul class="depth-list">
+            <li>Git / Bitbucket / Azure DevOps</li>
+            <li>SFDX + Salesforce CLI</li>
+            <li>Multi-env: Dev â†’ QA â†’ UAT â†’ Prod</li>
+            <li>PMD static code analysis</li>
+            <li>Automated test run gates</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sec-lbl reveal">Career Path</div>
+  <h2 class="sec-title reveal">Work <span class="g">Experience</span></h2>
+  <p class="sec-sub reveal">7+ years at India's premier consulting firms — Nagarro, Deloitte, Accenture &amp; TCS — delivering Salesforce solutions for Fortune 500 clients worldwide.</p>
+
+  <div class="tl">
+
+    <!-- Nagarro / L'Oreal -->
+    <div class="tli reveal">
+      <div class="tld live"></div>
+      <div class="tlc">
+        <div class="tlh">
+          <div class="tlr">Senior Salesforce Developer</div>
+          <div class="tlp">2025 — Present</div>
+        </div>
+        <div class="tlco">Nagarro &nbsp;<span class="loc">| Gurugram, India &nbsp;·&nbsp; L'Oreal B2B Commerce Project</span></div>
+        <ul class="tlb">
+          <li>Developing new Lightning Web Components for L'Oreal's global B2B Commerce Cloud storefront</li>
+          <li>Systematically identifying and resolving 50+ code quality issues — improving performance, readability &amp; maintainability</li>
+          <li>Architecting scalable Apex services for B2B catalog, pricing, and checkout workflows</li>
+          <li>Applying OOP design patterns and enforcing governor limits compliance across the codebase</li>
+          <li>Implementing LWC unit testing standards using Jest, increasing test coverage above 90%</li>
+          <li>Collaborating with global stakeholders to translate complex business requirements into Salesforce features</li>
+          <li>Conducting code reviews and establishing LWC component architecture standards for the team</li>
+        </ul>
+        <div class="tlst"><b>Stack:</b> Salesforce B2B Commerce Cloud · LWC · Apex · Salesforce CLI · GitHub · Jest · REST APIs</div>
+        <div class="tags">
+          <span class="tag tb">B2B Commerce Cloud</span><span class="tag tb">LWC</span>
+          <span class="tag tb">Apex</span><span class="tag tv">Code Quality</span>
+          <span class="tag tg">Jest Testing</span><span class="tag tgo">L'Oreal</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deloitte -->
+    <div class="tli reveal">
+      <div class="tld"></div>
+      <div class="tlc">
+        <div class="tlh">
+          <div class="tlr">Senior Consultant — Salesforce Developer &amp; Team Lead</div>
+          <div class="tlp">Jan 2024 — May 2025</div>
+        </div>
+        <div class="tlco">Deloitte &nbsp;<span class="loc">| Gurugram, India &nbsp;·&nbsp; Imperial Brands Project</span></div>
+        <ul class="tlb">
+          <li>Led a team of 4 developers in designing and implementing scalable B2B Commerce solutions for Imperial Brands</li>
+          <li>Architected B2B storefront portals: PortalEnablement, Reeconnect Classic, Reeconnect Light &amp; flexible concept implementations</li>
+          <li>Integrated Rebate Management with custom Batch Classes, Flows, and performance-optimized Apex</li>
+          <li>Built advanced UI/UX customizations using Dynamic Page Experiences (DPE) and LWC component extensions</li>
+          <li>Streamlined CI/CD release cycles using Azure DevOps pipelines and Bitbucket version control</li>
+          <li>Mentored junior developers, conducted sprint planning, and delivered client-facing demos</li>
+          <li>Reduced deployment errors by 70% through automated pipeline validations and code quality gates</li>
+        </ul>
+        <div class="tlst"><b>Stack:</b> LWC · DPE · Rebate Management · Batch Classes · Flows · Azure DevOps · Bitbucket · Salesforce CLI · Workbench</div>
+        <div class="tags">
+          <span class="tag tb">B2B Commerce</span><span class="tag tv">DPE</span>
+          <span class="tag tv">Rebate Management</span><span class="tag tg">Azure DevOps</span>
+          <span class="tag tgo">Team Lead</span><span class="tag tt">Imperial Brands</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accenture -->
+    <div class="tli reveal">
+      <div class="tld"></div>
+      <div class="tlc">
+        <div class="tlh">
+          <div class="tlr">Salesforce B2B Commerce Developer</div>
+          <div class="tlp">Sep 2021 — Dec 2023</div>
+        </div>
+        <div class="tlco">Accenture &nbsp;<span class="loc">| Pune, Maharashtra &nbsp;·&nbsp; Unilever International</span></div>
+        <ul class="tlb">
+          <li>Led Salesforce development for Unilever International's B2B Commerce Cloud &amp; Service Cloud platform</li>
+          <li>Designed and delivered 12+ feature enhancement modules for Unilever's global B2B website</li>
+          <li>Configured and optimized B2B storefronts — improving buyer account UX and order flow efficiency</li>
+          <li>Maintained 85%+ test coverage across all Apex classes, triggers, and LWC components</li>
+          <li>Implemented Salesforce CPQ with custom pricing rules, discount tiers &amp; approval workflows</li>
+          <li>Automated critical manual processes, reducing operational overhead by 40%</li>
+          <li>Built REST API integration layer connecting Salesforce with Unilever's SAP and ERP systems</li>
+          <li>Conducted client demos, authored technical documentation, and drove user adoption</li>
+        </ul>
+        <div class="tlst"><b>Stack:</b> Salesforce LWC · Salesforce CPQ · Apex · JavaScript · Workbench · Data Loader · GitHub · VS Code</div>
+        <div class="tags">
+          <span class="tag tb">B2B Commerce</span><span class="tag tb">Service Cloud</span>
+          <span class="tag tv">CPQ</span><span class="tag tg">85%+ Coverage</span>
+          <span class="tag tt">SAP Integration</span><span class="tag tgo">Unilever</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TCS Salesforce -->
+    <div class="tli reveal">
+      <div class="tld"></div>
+      <div class="tlc">
+        <div class="tlh">
+          <div class="tlr">Salesforce Developer</div>
+          <div class="tlp">Sep 2019 — Sep 2021</div>
+        </div>
+        <div class="tlco">Tata Consultancy Services &nbsp;<span class="loc">| Indore, India &nbsp;·&nbsp; Homeforce Application</span></div>
+        <ul class="tlb">
+          <li>Led Salesforce integration for Homeforce mobile app — ensuring real-time data sync across field service teams</li>
+          <li>Developed Apex Triggers, Handler classes &amp; Controller Classes with strict governor limits adherence</li>
+          <li>Implemented Salesforce-to-mobile REST API framework enabling offline data capture and sync</li>
+          <li>Customized page layouts, record types &amp; components to match evolving business requirements</li>
+          <li>Enforced code quality standards through peer reviews and maintained high unit test coverage</li>
+          <li>Delivered end-to-end feature releases — requirements â†’ development â†’ UAT â†’ deployment</li>
+        </ul>
+        <div class="tlst"><b>Stack:</b> Salesforce · Apex · Ionic · Cordova · AngularJS · JavaScript · Azure DevOps · GitHub</div>
+        <div class="tags">
+          <span class="tag tb">Apex Triggers</span><span class="tag tt">Governor Limits</span>
+          <span class="tag tv">Mobile Integration</span><span class="tag tg">REST API</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TCS Full Stack -->
+    <div class="tli reveal">
+      <div class="tld"></div>
+      <div class="tlc">
+        <div class="tlh">
+          <div class="tlr">Full Stack Developer</div>
+          <div class="tlp">Nov 2018 — Sep 2019</div>
+        </div>
+        <div class="tlco">Tata Consultancy Services &nbsp;<span class="loc">| Pune, India &nbsp;·&nbsp; Homeforce &amp; Edocumentation</span></div>
+        <ul class="tlb">
+          <li>Designed and built UI/UX for Homeforce hybrid mobile app — Ionic + Cordova + Salesforce backend</li>
+          <li>Developed Edocumentation hybrid mobile app for cross-platform document management</li>
+          <li>Implemented RESTful API integrations bridging mobile frontend with Salesforce and backend services</li>
+          <li>Built dynamic, data-driven form components using JavaScript &amp; AngularJS</li>
+          <li>Led unit testing, regression testing &amp; systematic deployment ensuring app reliability</li>
+        </ul>
+        <div class="tlst"><b>Stack:</b> JavaScript · AngularJS · Node.js · Ionic · Cordova · Salesforce · REST APIs · Bitbucket · Jira</div>
+        <div class="tags">
+          <span class="tag tb">REST API</span><span class="tag tv">AngularJS</span>
+          <span class="tag tg">Hybrid Mobile</span><span class="tag tt">Ionic/Cordova</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-lbl reveal">Portfolio</div>
+  <h2 class="sec-title reveal">Featured <span class="g">Projects</span></h2>
+  <p class="sec-sub reveal">Enterprise Salesforce solutions delivered with a Salesforce-first architecture, premium UX, and measurable business impact.</p>
+
+  <div class="proj-company-block reveal">
+    <div class="company-header">
+      <div class="company-logo-pill"><span class="cmp-logo">NG</span> Nagarro &nbsp;·&nbsp; L'Oreal</div>
+      <span class="company-role-tag">Senior Salesforce Developer &nbsp;·&nbsp; 2025 - Present</span>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card featured-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#060620,#0d1040)">
+          <span class="proj-emoji">LOR</span>
+          <div class="proj-thumb-overlay"></div>
+          <div class="feat-label">Current Project</div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-icon">B2B</div>
+          <div class="proj-name">L'Oreal B2B Commerce Cloud Platform</div>
+          <div class="proj-desc">Global B2B Commerce Cloud implementation with new LWC modules, scalable Apex services, and strict code-quality governance.</div>
+          <ul class="proj-hl">
+            <li>Built 12+ reusable LWC modules for storefront and account flows</li>
+            <li>Resolved 50+ quality issues with bulkification and governor-safe patterns</li>
+            <li>Raised LWC test coverage to 92% via Jest standards</li>
+            <li>Delivered Apex REST integrations for pricing, catalog, and checkout</li>
+          </ul>
+          <div class="proj-impact">
+            <div class="impact-item"><div class="impact-num">92%</div><div class="impact-lbl">Coverage</div></div>
+            <div class="impact-item"><div class="impact-num">50+</div><div class="impact-lbl">Fixes</div></div>
+            <div class="impact-item"><div class="impact-num">12+</div><div class="impact-lbl">LWC</div></div>
+          </div>
+          <div class="tags"><span class="tag tb">B2B Commerce</span><span class="tag tb">LWC</span><span class="tag tb">Apex</span><span class="tag tv">Code Quality</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-company-block reveal">
+    <div class="company-header">
+      <div class="company-logo-pill"><span class="cmp-logo">DE</span> Deloitte &nbsp;·&nbsp; Imperial Brands</div>
+      <span class="company-role-tag">Senior Consultant &nbsp;·&nbsp; Jan 2024 - May 2025</span>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#06102a,#0a1840)"><span class="proj-emoji">IMP</span><div class="proj-thumb-overlay"></div></div>
+        <div class="proj-body">
+          <div class="proj-icon">PORT</div>
+          <div class="proj-name">Reeconnect B2B Portal</div>
+          <div class="proj-desc">Multi-variant B2B portal architecture with Dynamic Page Experiences and advanced buyer journeys.</div>
+          <div class="tags"><span class="tag tb">B2B Commerce</span><span class="tag tv">DPE</span><span class="tag tt">LWC</span></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#0a0630,#120a48)"><span class="proj-emoji">RBT</span><div class="proj-thumb-overlay"></div></div>
+        <div class="proj-body">
+          <div class="proj-icon">BCH</div>
+          <div class="proj-name">Rebate Management Engine</div>
+          <div class="proj-desc">Batch Apex + Flow orchestration for high-volume rebate calculation and reconciliation.</div>
+          <div class="tags"><span class="tag tv">Rebate Mgmt</span><span class="tag tb">Batch Apex</span><span class="tag tg">Flows</span></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#060a20,#0c1230)"><span class="proj-emoji">CI/CD</span><div class="proj-thumb-overlay"></div></div>
+        <div class="proj-body">
+          <div class="proj-icon">DPL</div>
+          <div class="proj-name">Azure DevOps Deployment Framework</div>
+          <div class="proj-desc">Automated Salesforce deployment lifecycle with test gates, rollback strategy, and release controls.</div>
+          <div class="tags"><span class="tag tg">Azure DevOps</span><span class="tag tb">SFDX</span><span class="tag tt">Bitbucket</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-company-block reveal">
+    <div class="company-header">
+      <div class="company-logo-pill"><span class="cmp-logo">AC</span> Accenture &nbsp;·&nbsp; Unilever International</div>
+      <span class="company-role-tag">B2B Commerce Developer &nbsp;·&nbsp; Sep 2021 - Dec 2023</span>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#08200a,#0f3010)"><span class="proj-emoji">UNI</span><div class="proj-thumb-overlay"></div></div>
+        <div class="proj-body">
+          <div class="proj-icon">ORD</div>
+          <div class="proj-name">B2B Smart Order Management</div>
+          <div class="proj-desc">LWC + Apex order workflows with optimized SOQL and reusable service/domain patterns.</div>
+          <div class="tags"><span class="tag tb">LWC</span><span class="tag tb">Apex</span><span class="tag tv">Platform Events</span></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#1a0820,#280a30)"><span class="proj-emoji">CPQ</span><div class="proj-thumb-overlay"></div></div>
+        <div class="proj-body">
+          <div class="proj-icon">QTE</div>
+          <div class="proj-name">Dynamic Quote Engine</div>
+          <div class="proj-desc">CPQ customization with complex pricing tiers, approvals, and accelerated quote-to-order flow.</div>
+          <div class="tags"><span class="tag tv">Salesforce CPQ</span><span class="tag tb">Apex</span><span class="tag tgo">73% Faster</span></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#0a1820,#0c2030)"><span class="proj-emoji">SAP</span><div class="proj-thumb-overlay"></div></div>
+        <div class="proj-body">
+          <div class="proj-icon">API</div>
+          <div class="proj-name">SAP-Salesforce Integration Bridge</div>
+          <div class="proj-desc">Secure REST integration layer for products, inventory, pricing, and order sync at enterprise scale.</div>
+          <div class="tags"><span class="tag tb">REST API</span><span class="tag tt">SAP</span><span class="tag tg">99.8% Uptime</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-company-block reveal">
+    <div class="company-header">
+      <div class="company-logo-pill"><span class="cmp-logo">TCS</span> TCS &nbsp;·&nbsp; Homeforce</div>
+      <span class="company-role-tag">Salesforce Developer &amp; Full Stack &nbsp;·&nbsp; 2018 - 2021</span>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#0a1010,#101a18)"><span class="proj-emoji">HMF</span><div class="proj-thumb-overlay"></div></div>
+        <div class="proj-body">
+          <div class="proj-icon">SYNC</div>
+          <div class="proj-name">Homeforce Real-Time Field Service Sync</div>
+          <div class="proj-desc">Mobile + Salesforce integration for real-time field workflows, notifications, and offline-safe synchronization.</div>
+          <div class="tags"><span class="tag tb">Apex REST</span><span class="tag tv">Platform Events</span><span class="tag tg">Real-Time Sync</span></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#10080a,#1a0c0e)"><span class="proj-emoji">EDOC</span><div class="proj-thumb-overlay"></div></div>
+        <div class="proj-body">
+          <div class="proj-icon">APP</div>
+          <div class="proj-name">Edocumentation Cross-Platform App</div>
+          <div class="proj-desc">Ionic/Cordova app integrated with Salesforce for document capture, validation, and sync.</div>
+          <div class="tags"><span class="tag tt">Ionic/Cordova</span><span class="tag tv">AngularJS</span><span class="tag tb">Salesforce</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="sec-lbl reveal">Credentials</div>
+  <h2 class="sec-title reveal">Salesforce <span class="g">Certifications</span></h2>
+  <p class="sec-sub reveal">5 active Salesforce certifications — from core development to AI and JavaScript — validating end-to-end platform expertise.</p>
+
+  <div class="certs-grid">
+
+    <!-- PD II -->
+    <div class="cert-card reveal" style="background:linear-gradient(160deg,#032D60,#0a1a3a)">
+      <div class="cert-header">
+        <svg class="cert-badge-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="38" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+          <circle cx="40" cy="40" r="28" fill="rgba(1,118,211,0.25)" stroke="#1B96FF" stroke-width="1.5"/>
+          <path d="M28 42c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <path d="M34 50c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#1B96FF" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="40" cy="30" r="4" fill="#fff"/>
+          <path d="M36 36l4 4 4-4" stroke="#1B96FF" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <img class="cert-badge-img" src="Platform Developer II.png" alt="Salesforce Platform Developer II badge" loading="lazy"/>
+        <div class="cert-hname" style="color:#fff">Salesforce Certified<br/>Platform Developer II</div>
+      </div>
+      <div class="cert-footer" style="background:rgba(0,0,0,.25)">
+        <span class="cert-issuer-lbl" style="color:rgba(255,255,255,.6)">Salesforce</span>
+        <span class="cert-date" style="color:#1B96FF">Aug 2024</span>
+      </div>
+    </div>
+
+    <!-- AI Associate -->
+    <div class="cert-card reveal d1" style="background:linear-gradient(160deg,#1a0535,#2d0858)">
+      <div class="cert-header">
+        <svg class="cert-badge-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="38" fill="rgba(255,255,255,0.06)" stroke="rgba(180,100,255,0.4)" stroke-width="1.5"/>
+          <circle cx="40" cy="40" r="28" fill="rgba(123,97,255,0.2)" stroke="#9B6FFF" stroke-width="1.5"/>
+          <path d="M32 40h16M40 32v16" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="40" cy="40" r="5" fill="#9B6FFF"/>
+          <circle cx="28" cy="34" r="3" fill="rgba(180,130,255,.6)"/>
+          <circle cx="52" cy="34" r="3" fill="rgba(180,130,255,.6)"/>
+          <circle cx="28" cy="46" r="3" fill="rgba(180,130,255,.6)"/>
+          <circle cx="52" cy="46" r="3" fill="rgba(180,130,255,.6)"/>
+          <line x1="31" y1="35" x2="37" y2="39" stroke="rgba(200,160,255,.5)" stroke-width="1"/>
+          <line x1="49" y1="35" x2="43" y2="39" stroke="rgba(200,160,255,.5)" stroke-width="1"/>
+          <line x1="31" y1="45" x2="37" y2="41" stroke="rgba(200,160,255,.5)" stroke-width="1"/>
+          <line x1="49" y1="45" x2="43" y2="41" stroke="rgba(200,160,255,.5)" stroke-width="1"/>
+        </svg>
+        <img class="cert-badge-img" src="AI Associate.jpg" alt="Salesforce AI Associate badge" loading="lazy"/>
+        <div class="cert-hname" style="color:#fff">Salesforce Certified<br/>AI Associate</div>
+      </div>
+      <div class="cert-footer" style="background:rgba(0,0,0,.25)">
+        <span class="cert-issuer-lbl" style="color:rgba(255,255,255,.6)">Salesforce</span>
+        <span class="cert-date" style="color:#9B6FFF">Oct 2024</span>
+      </div>
+    </div>
+
+    <!-- PD I -->
+    <div class="cert-card reveal d2" style="background:linear-gradient(160deg,#012050,#021a3a)">
+      <div class="cert-header">
+        <svg class="cert-badge-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="38" fill="rgba(255,255,255,0.06)" stroke="rgba(27,150,255,0.4)" stroke-width="1.5"/>
+          <circle cx="40" cy="40" r="28" fill="rgba(27,150,255,0.15)" stroke="#1B96FF" stroke-width="1.5"/>
+          <rect x="30" y="30" width="20" height="20" rx="3" stroke="#fff" stroke-width="1.8" fill="none"/>
+          <path d="M35 38l3 3 7-7" stroke="#1B96FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <img class="cert-badge-img" src="Platform Developer I.jpg" alt="Salesforce Platform Developer I badge" loading="lazy"/>
+        <div class="cert-hname" style="color:#fff">Salesforce Certified<br/>Platform Developer I</div>
+      </div>
+      <div class="cert-footer" style="background:rgba(0,0,0,.25)">
+        <span class="cert-issuer-lbl" style="color:rgba(255,255,255,.6)">Salesforce</span>
+        <span class="cert-date" style="color:#1B96FF">Jun 2022</span>
+      </div>
+    </div>
+
+    <!-- JS Dev I -->
+    <div class="cert-card reveal d3" style="background:linear-gradient(160deg,#2a1800,#3d2200)">
+      <div class="cert-header">
+        <svg class="cert-badge-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="38" fill="rgba(255,255,255,0.06)" stroke="rgba(240,165,0,0.4)" stroke-width="1.5"/>
+          <circle cx="40" cy="40" r="28" fill="rgba(240,165,0,0.12)" stroke="#F0A500" stroke-width="1.5"/>
+          <text x="40" y="45" text-anchor="middle" font-size="20" font-weight="800" fill="#F0A500" font-family="monospace">JS</text>
+        </svg>
+        <img class="cert-badge-img" src="JavaScript Developer I.png" alt="Salesforce JavaScript Developer I badge" loading="lazy"/>
+        <div class="cert-hname" style="color:#fff">Salesforce Certified<br/>JavaScript Developer I</div>
+      </div>
+      <div class="cert-footer" style="background:rgba(0,0,0,.25)">
+        <span class="cert-issuer-lbl" style="color:rgba(255,255,255,.6)">Salesforce</span>
+        <span class="cert-date" style="color:#F0A500">Apr 2022</span>
+      </div>
+    </div>
+
+    <!-- Admin -->
+    <div class="cert-card reveal d4" style="background:linear-gradient(160deg,#003020,#004830)">
+      <div class="cert-header">
+        <svg class="cert-badge-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="38" fill="rgba(255,255,255,0.06)" stroke="rgba(0,200,100,0.4)" stroke-width="1.5"/>
+          <circle cx="40" cy="40" r="28" fill="rgba(46,132,74,0.2)" stroke="#2E844A" stroke-width="1.5"/>
+          <path d="M40 28l3 6h6l-5 4 2 6-6-4-6 4 2-6-5-4h6z" stroke="#00C864" stroke-width="1.8" fill="rgba(0,200,100,.15)" stroke-linejoin="round"/>
+        </svg>
+        <img class="cert-badge-img" src="Administrator.png" alt="Salesforce Administrator badge" loading="lazy"/>
+        <div class="cert-hname" style="color:#fff">Salesforce Certified<br/>Administrator</div>
+      </div>
+      <div class="cert-footer" style="background:rgba(0,0,0,.25)">
+        <span class="cert-issuer-lbl" style="color:rgba(255,255,255,.6)">Salesforce</span>
+        <span class="cert-date" style="color:#00C864">Jan 2022</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="sec-lbl reveal">Recognition</div>
+  <h2 class="sec-title reveal">Awards &amp; <span class="g">Achievements</span></h2>
+  <p class="sec-sub reveal">Recognized for technical excellence, team leadership, and outstanding delivery across Deloitte, Accenture &amp; TCS.</p>
+  <div class="awards-grid">
+    <div class="award-card reveal"><div class="award-ico">MTD</div><div><div class="award-name">Move The Dot Award</div><div class="award-meta">Deloitte</div></div></div>
+    <div class="award-card reveal d1"><div class="award-ico">SVC</div><div><div class="award-name">Service Commitment Award</div><div class="award-meta">TCS &nbsp;·&nbsp; Sep 2021</div></div></div>
+    <div class="award-card reveal d2"><div class="award-ico">APP</div><div><div class="award-name">Appreciation Certificate</div><div class="award-meta">TCS &nbsp;·&nbsp; Nov 2020</div></div></div>
+    <div class="award-card reveal d3"><div class="award-ico">TEAM</div><div><div class="award-name">Best Team Award</div><div class="award-meta">TCS &nbsp;·&nbsp; Feb 2020</div></div></div>
+    <div class="award-card reveal"><div class="award-ico">APL</div><div><div class="award-name">Applause Award x2</div><div class="award-meta">TCS &nbsp;·&nbsp; Jan 2020 &amp; Nov 2019</div></div></div>
+    <div class="award-card reveal d1"><div class="award-ico">FPM</div><div><div class="award-name">Fresco Play Miles Award</div><div class="award-meta">TCS &nbsp;·&nbsp; Aug 2019</div></div></div>
+    <div class="award-card reveal d2"><div class="award-ico">RUP</div><div><div class="award-name">1st Runner-Up - State Level Skit</div><div class="award-meta">State Competition</div></div></div>
+    <div class="award-card reveal d3"><div class="award-ico">1ST</div><div><div class="award-name">1st Place - College Speech</div><div class="award-meta">Technocrats Institute, Bhopal</div></div></div>
+  </div>
+</section>
+
+<!-- RECOMMENDATIONS -->
+<section id="recommendations">
+  <div class="sec-lbl reveal">Social Proof</div>
+  <h2 class="sec-title reveal">LinkedIn <span class="g">Recommendations</span></h2>
+  <p class="sec-sub reveal">8 real recommendations from managers, colleagues &amp; clients — sourced directly from LinkedIn (2,000+ followers · 500+ connections).</p>
+  <div class="rec-grid">
+
+    <!-- Manish Mishra — Deloitte Associate Director (direct manager) -->
+    <div class="rec-card reveal">
+      <div class="rec-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rec-text">"I had the pleasure of working closely with Satyam on complex Salesforce projects, and I can confidently say he is an outstanding Senior Salesforce Developer. Satyam possesses deep technical expertise in Salesforce architecture, Apex, and Lightning, consistently delivering high-quality solutions that meet both business and technical requirements. What sets Satyam apart is not just his technical skill, but his ability to think critically and solve problems creatively under tight deadlines. He takes ownership of his work, collaborates effectively with cross-functional teams, and always seeks to enhance project outcomes. His dedication, positive attitude, and professionalism have made a significant impact on the success of our projects."</div>
+      <div class="rec-author">
+        <a href="https://www.linkedin.com/in/manish-sfdc/" target="_blank" rel="noopener noreferrer" aria-label="Manish Mishra LinkedIn profile">
+          <img class="rec-photo" src="https://media.licdn.com/dms/image/v2/C4E03AQGLBYpcmp0s_Q/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1599811681309?e=1774483200&v=beta&t=LWjyTreFE65uZ-JI-7-S8Pbey_w_--V3v2jzVn0tJZs" alt="Manish Mishra" onerror="this.style.display='none';this.parentElement.nextElementSibling.style.display='flex'"/>
+        </a>
+        <div class="rec-avatar" style="display:none">MM</div>
+        <div>
+          <div class="rec-name"><a href="https://www.linkedin.com/in/manish-sfdc/" target="_blank" rel="noopener noreferrer">Manish Mishra</a></div>
+          <div class="rec-role">Associate Director &amp; Salesforce Architect &nbsp;·&nbsp; Deloitte South Asia</div>
+          <div class="rec-rel" style="font-size:.68rem;color:var(--t3);margin-top:2px">Managed Satyam directly &nbsp;·&nbsp; Sep 2024</div>
+          <div class="li-badge">LI LinkedIn Recommendation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Abhay Gupta — Deloitte, same team -->
+    <div class="rec-card reveal d1">
+      <div class="rec-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rec-text">"I had the pleasure of working with Satyam in my current project, and during this time, he consistently demonstrated exceptional technical expertise. Satyam has an incredible depth of knowledge in Salesforce Apex and LWC, always staying ahead of industry trends and tackling complex challenges with ease. What sets Satyam apart is his ability to not only understand intricate technical concepts but also communicate them in a clear and effective manner. His problem-solving skills are unmatched, and he brings a practical, solution-oriented approach to every project. Satyam is also highly adaptable, continuously improving his skill set and staying current with the latest advancements in technology. I highly recommend Satyam for any role requiring deep technical knowledge and a passion for delivering high-quality solutions. His expertise would be an asset to any organization."</div>
+      <div class="rec-author">
+        <a href="https://www.linkedin.com/in/abhay-gupta-373206104/" target="_blank" rel="noopener noreferrer" aria-label="Abhay Gupta LinkedIn profile">
+          <img class="rec-photo" src="https://media.licdn.com/dms/image/v2/D5603AQFxWA7Gnq9fFA/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1721489147402?e=1774483200&v=beta&t=MsbYDklq1KMR7tvNlYPEf2MFSnBxgE4hNETYSBfzuyg" alt="Abhay Gupta" onerror="this.style.display='none';this.parentElement.nextElementSibling.style.display='flex'"/>
+        </a>
+        <div class="rec-avatar" style="display:none">AG</div>
+        <div>
+          <div class="rec-name"><a href="https://www.linkedin.com/in/abhay-gupta-373206104/" target="_blank" rel="noopener noreferrer">Abhay Gupta</a></div>
+          <div class="rec-role">Salesforce &amp; Vlocity Consultant &nbsp;·&nbsp; Deloitte (US) &nbsp;|&nbsp; 7x Certified</div>
+          <div class="rec-rel" style="font-size:.68rem;color:var(--t3);margin-top:2px">Same team at Deloitte &nbsp;·&nbsp; Mar 2025</div>
+          <div class="li-badge">LI LinkedIn Recommendation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sai Ghautgay — client -->
+    <div class="rec-card reveal d2">
+      <div class="rec-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rec-text">"Satyam was an invaluable client. His knowledge and articulate explanations made collaborating with him a pleasure. I always felt comfortable trusting him for guidance and advice. His integrity and intelligence shone through in our work together, and I believe his positive presence significantly impacted my own experience."</div>
+      <div class="rec-author">
+        <a href="https://www.linkedin.com/in/sai-ghautgay-3792b922a/" target="_blank" rel="noopener noreferrer" aria-label="Sai Ghautgay LinkedIn profile">
+          <img class="rec-photo" src="https://media.licdn.com/dms/image/v2/D4E03AQGz9veSco33KQ/profile-displayphoto-scale_100_100/B4EZw8nFovJoAc-/0/1770543406225?e=1774483200&v=beta&t=ZQOBeOfzWII4Oe8mEfZvxLkWDRRLhNgRWJFis1oSPhI" alt="Sai Ghautgay" onerror="this.style.display='none';this.parentElement.nextElementSibling.style.display='flex'"/>
+        </a>
+        <div class="rec-avatar" style="display:none">SG</div>
+        <div>
+          <div class="rec-name"><a href="https://www.linkedin.com/in/sai-ghautgay-3792b922a/" target="_blank" rel="noopener noreferrer">Sai Ghautgay</a></div>
+          <div class="rec-role">4x Salesforce Certified Developer</div>
+          <div class="rec-rel" style="font-size:.68rem;color:var(--t3);margin-top:2px">Satyam's client &nbsp;·&nbsp; Jun 2024</div>
+          <div class="li-badge">LI LinkedIn Recommendation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Priyanka Jagtap — TCS Tech Lead -->
+    <div class="rec-card reveal d1">
+      <div class="rec-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rec-text">"Satyam is very good at problem solving as well as technically finding the right solution. He is good in communication as well as a good team member. He is a smart working developer. Working with him is a great experience."</div>
+      <div class="rec-author">
+        <a href="https://www.linkedin.com/in/priyanka-jagtap-5b188b42/" target="_blank" rel="noopener noreferrer" aria-label="Priyanka Jagtap LinkedIn profile">
+          <img class="rec-photo" src="https://media.licdn.com/dms/image/v2/D4E03AQHG1RYzIbWgVA/profile-displayphoto-scale_100_100/B4EZx3szZ3GcAc-/0/1771534761697?e=1774483200&v=beta&t=mRYLRmbgQHGUcTTx5jDwfY6kFPuUOJsNX8ov8Mj73DA" alt="Priyanka Jagtap" onerror="this.style.display='none';this.parentElement.nextElementSibling.style.display='flex'"/>
+        </a>
+        <div class="rec-avatar" style="display:none">PJ</div>
+        <div>
+          <div class="rec-name"><a href="https://www.linkedin.com/in/priyanka-jagtap-5b188b42/" target="_blank" rel="noopener noreferrer">Priyanka Jagtap</a></div>
+          <div class="rec-role">Technical Lead &nbsp;·&nbsp; Tata Consultancy Services</div>
+          <div class="rec-rel" style="font-size:.68rem;color:var(--t3);margin-top:2px">Senior colleague at TCS &nbsp;·&nbsp; Aug 2021</div>
+          <div class="li-badge">LI LinkedIn Recommendation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gaurav Katkar — direct report at TCS -->
+    <div class="rec-card reveal d2">
+      <div class="rec-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rec-text">"Satyam is a fantastic professional who brings all of the skills. It was indeed a pleasure working with such senior personnel at the office. Under his guidance, I gained a variety of skills that help me in every aspect. Though he was a senior, he always made me feel welcome and asked for my opinions on various issues."</div>
+      <div class="rec-author">
+        <a href="https://www.linkedin.com/in/gauravkatkar/" target="_blank" rel="noopener noreferrer" aria-label="Gaurav Katkar LinkedIn profile">
+          <img class="rec-photo" src="https://media.licdn.com/dms/image/v2/D5603AQGMFszF4twnrg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1674891555941?e=1774483200&v=beta&t=Am8tzPQxiJN9C4rqrpwCCUkilO9UitsystUcv2Xj8A4" alt="Gaurav Katkar" onerror="this.style.display='none';this.parentElement.nextElementSibling.style.display='flex'"/>
+        </a>
+        <div class="rec-avatar" style="display:none">GK</div>
+        <div>
+          <div class="rec-name"><a href="https://www.linkedin.com/in/gauravkatkar/" target="_blank" rel="noopener noreferrer">Gaurav Katkar</a></div>
+          <div class="rec-role">5x Salesforce Dev · LWC · Apex &nbsp;·&nbsp; Salesforce Pvt Ltd</div>
+          <div class="rec-rel" style="font-size:.68rem;color:var(--t3);margin-top:2px">Reported to Satyam at TCS &nbsp;·&nbsp; Jul 2021</div>
+          <div class="li-badge">LI LinkedIn Recommendation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arpit Sharma — Capgemini, direct report -->
+    <div class="rec-card reveal">
+      <div class="rec-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rec-text">"Satyam is knowledgeable, articulate, and a pleasure to work with. He was a senior member of the Developer team when I joined the company in 2021, and he was somebody I trusted and looked forward to for guidance and advice. He brings integrity and intelligence to his work, and I believe his overall presence positively impacted the company and my individual experience working there."</div>
+      <div class="rec-author">
+        <a href="https://www.linkedin.com/in/arpit-sharma-52a54a122/" target="_blank" rel="noopener noreferrer" aria-label="Arpit Sharma LinkedIn profile">
+          <img class="rec-photo" src="https://media.licdn.com/dms/image/v2/D4D03AQESyt0vBLJwPg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1683643387247?e=1774483200&v=beta&t=ZzqlrZnQ3IJrsZzdKvaTqRkeTLmSKeSsaoRK6Rifjj8" alt="Arpit Sharma" onerror="this.style.display='none';this.parentElement.nextElementSibling.style.display='flex'"/>
+        </a>
+        <div class="rec-avatar" style="display:none">AS</div>
+        <div>
+          <div class="rec-name"><a href="https://www.linkedin.com/in/arpit-sharma-52a54a122/" target="_blank" rel="noopener noreferrer">Arpit Sharma</a></div>
+          <div class="rec-role">Consultant &nbsp;·&nbsp; Capgemini</div>
+          <div class="rec-rel" style="font-size:.68rem;color:var(--t3);margin-top:2px">Reported to Satyam directly &nbsp;·&nbsp; Jul 2021</div>
+          <div class="li-badge">LI LinkedIn Recommendation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Michael Hofer — Linde Gas, client -->
+    <div class="rec-card reveal d1">
+      <div class="rec-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rec-text">"Thank you Satyam for the good work experience in the past years. It was always good teamwork leading to great success points on that long way to the final solution. Wish you just the best for your upcoming future."</div>
+      <div class="rec-author">
+        <a href="https://www.linkedin.com/search/results/people/?keywords=Michael%20Hofer" target="_blank" rel="noopener noreferrer" aria-label="Michael Hofer LinkedIn search">
+          <div class="rec-avatar">MH</div>
+        </a>
+        <div>
+          <div class="rec-name"><a href="https://www.linkedin.com/search/results/people/?keywords=Michael%20Hofer" target="_blank" rel="noopener noreferrer">Michael Hofer</a></div>
+          <div class="rec-role">System &amp; Process Specialist / Project Manager &nbsp;·&nbsp; Linde Gas Therapeutics GmbH</div>
+          <div class="rec-rel" style="font-size:.68rem;color:var(--t3);margin-top:2px">Satyam's client &nbsp;·&nbsp; Jul 2021</div>
+          <div class="li-badge">LI LinkedIn Recommendation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ankit Jain — 20x Certified, same team -->
+    <div class="rec-card reveal d2">
+      <div class="rec-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rec-text">"Working with Satyam has been a very good experience. He is very keen to learn new things and has great grasping power. He has helped me debug various issues with the Salesforce mobile app. He has strong technical knowledge and has been very supportive. He is a great team player and an asset to any organization."</div>
+      <div class="rec-author">
+        <a href="https://www.linkedin.com/search/results/people/?keywords=Ankit%20Jain%20Salesforce" target="_blank" rel="noopener noreferrer" aria-label="Ankit Jain LinkedIn search">
+          <div class="rec-avatar" style="background:linear-gradient(135deg,var(--violet),var(--sf))">AJ</div>
+        </a>
+        <div>
+          <div class="rec-name"><a href="https://www.linkedin.com/search/results/people/?keywords=Ankit%20Jain%20Salesforce" target="_blank" rel="noopener noreferrer">Ankit Jain</a></div>
+          <div class="rec-role">20x Salesforce Certified &nbsp;·&nbsp; 3x Gen AI &nbsp;·&nbsp; YouTube Creator &amp; SF Community Speaker</div>
+          <div class="rec-rel" style="font-size:.68rem;color:var(--t3);margin-top:2px">Same team &nbsp;·&nbsp; Jun 2021</div>
+          <div class="li-badge">LI LinkedIn Recommendation</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="sec-lbl reveal">Get In Touch</div>
+    <h2 class="sec-title reveal">Let's Build Something <span class="g">Great</span></h2>
+    <p class="sec-sub reveal" style="margin:0 auto">Open to senior Salesforce developer roles, B2B Commerce Cloud engagements, and consulting projects worldwide.</p>
+    <div class="contact-card reveal">
+      <div class="contact-name">Satyam Tiwari</div>
+      <div class="contact-role">Senior Salesforce Developer &nbsp;·&nbsp; B2B Commerce Cloud Specialist</div>
+      <div class="contact-loc">Gurugram, Haryana, India &nbsp;·&nbsp; Originally from Khajuraho, MP</div>
+      <div class="contact-links">
+        <a href="mailto:satyamt37@gmail.com" class="cl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          satyamt37@gmail.com
+        </a>
+        <a href="tel:+918959459494" class="cl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.38 2 2 0 0 1 3.59 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +91 8959459494
+        </a>
+        <a href="https://www.linkedin.com/in/satyamt37" target="_blank" class="cl">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          linkedin.com/in/satyamt37
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">ST.dev</div>
+  <p>&#169; 2026 Satyam Tiwari &nbsp;·&nbsp; Senior Salesforce Developer &nbsp;·&nbsp; Nagarro</p>
+  <p>Gurugram, India</p>
+</footer>
+
+<script>
+/* Nav scroll */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>50));
+
+/* Particles */
+(function(){
+  const c=document.getElementById('pts'),x=c.getContext('2d');
+  let W,H,P=[];
+  function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight}
+  class Pt{
+    constructor(){this.r()}
+    r(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.22;this.vy=(Math.random()-.5)*.22;this.s=Math.random()*1.2+.35;this.a=Math.random()*.3+.05}
+    u(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.r()}
+    d(){x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);x.fillStyle=`rgba(1,118,211,${this.a})`;x.fill()}
+  }
+  function init(){
+    resize();
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    P=Array.from({length:isMobile?45:70},()=>new Pt());
+  }
+  function lines(){
+    for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){
+      const d=Math.hypot(P[i].x-P[j].x,P[i].y-P[j].y);
+      if(d<78){x.beginPath();x.moveTo(P[i].x,P[i].y);x.lineTo(P[j].x,P[j].y);x.strokeStyle=`rgba(1,118,211,${.04*(1-d/78)})`;x.lineWidth=.5;x.stroke()}
+    }
+  }
+  function loop(){x.clearRect(0,0,W,H);P.forEach(p=>{p.u();p.d()});lines();requestAnimationFrame(loop)}
+  window.addEventListener('resize',resize);
+  init();loop();
+})();
+
+/* Reveal */
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      e.target.querySelectorAll('.bfill').forEach(b=>b.style.width=b.dataset.w+'%');
+      ro.unobserve(e.target);
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* Counter */
+function cnt(el,t){
+  let n=0;const s=t/55,ti=setInterval(()=>{
+    n+=s;if(n>=t){n=t;clearInterval(ti)}
+    el.textContent=Math.floor(n)+(el.dataset.count==='500'?'+':'+');
+  },18);
+}
+setTimeout(()=>document.querySelectorAll('[data-count]').forEach(el=>cnt(el,+el.dataset.count)),500);
+
+/* Active nav */
+window.addEventListener('scroll',()=>{
+  let cur='';
+  document.querySelectorAll('section[id]').forEach(s=>{if(scrollY>=s.offsetTop-120)cur=s.id});
+  document.querySelectorAll('.nav-links a').forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--sf)':''});
+});
+</script>
+</body>
+</html>
+
+
+
